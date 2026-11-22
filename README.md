@@ -7,7 +7,7 @@ Resultados, clasificación, goleadores y calendario `.ics` de **PALANCAS FS** (F
 Publicada en GitHub Pages. Suscríbete al calendario desde:
 
 ```
-https://fernandogr98.github.io/palancasfs-calendario/palancas.ics
+https://palancasfc.es/palancas.ics
 ```
 
 ## Actualización automática
