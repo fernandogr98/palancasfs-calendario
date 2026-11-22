@@ -1,0 +1,200 @@
+[
+ {
+  "id": "245207",
+  "jornada": "1",
+  "fecha": "2026-09-26T21:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "LUGAREÑOS FC",
+  "goles": 10,
+  "golesc": 0
+ },
+ {
+  "id": "245211",
+  "jornada": "2",
+  "fecha": "2026-10-03T20:00:00",
+  "equipo1": "PALESTINA FC",
+  "equipo2": "PALANCAS FS",
+  "goles": 3,
+  "golesc": 7
+ },
+ {
+  "id": "245220",
+  "jornada": "3",
+  "fecha": "2026-10-17T22:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "NEW TEAM",
+  "goles": 2,
+  "golesc": 1
+ },
+ {
+  "id": "245224",
+  "jornada": "4",
+  "fecha": "2026-10-24T21:00:00",
+  "equipo1": "TELEFUNKEN 2.0",
+  "equipo2": "PALANCAS FS",
+  "goles": 2,
+  "golesc": 3
+ },
+ {
+  "id": "245228",
+  "jornada": "5",
+  "fecha": "2026-11-07T20:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "REAL RIF FC",
+  "goles": 5,
+  "golesc": 5
+ },
+ {
+  "id": "245234",
+  "jornada": "6",
+  "fecha": "2026-11-14T20:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "TITOS FC",
+  "goles": 5,
+  "golesc": 2
+ },
+ {
+  "id": "245242",
+  "jornada": "7",
+  "fecha": "2026-11-21T21:00:00",
+  "equipo1": "LOS RETIRADOS F.S",
+  "equipo2": "PALANCAS FS",
+  "goles": 0,
+  "golesc": 19
+ },
+ {
+  "id": "245251",
+  "jornada": "8",
+  "fecha": "2026-11-28T22:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "EL RIO FC",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245257",
+  "jornada": "9",
+  "fecha": "2026-12-12T22:00:00",
+  "equipo1": "DESCANSO FC",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245260",
+  "jornada": "10",
+  "fecha": "2027-01-09T21:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "JORHINTON FC",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245265",
+  "jornada": "11",
+  "fecha": "2027-01-16T20:00:00",
+  "equipo1": "TANGER CF",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245273",
+  "jornada": "12",
+  "fecha": "2027-01-23T21:00:00",
+  "equipo1": "LUGAREÑOS FC",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245277",
+  "jornada": "13",
+  "fecha": "2027-02-06T20:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "PALESTINA FC",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245284",
+  "jornada": "14",
+  "fecha": "2027-02-13T21:00:00",
+  "equipo1": "NEW TEAM",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245292",
+  "jornada": "15",
+  "fecha": "2027-02-20T22:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "TELEFUNKEN 2.0",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245299",
+  "jornada": "16",
+  "fecha": "2027-03-06T22:00:00",
+  "equipo1": "REAL RIF FC",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245303",
+  "jornada": "17",
+  "fecha": "2027-03-13T21:00:00",
+  "equipo1": "TITOS FC",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245306",
+  "jornada": "18",
+  "fecha": "2027-04-03T20:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "LOS RETIRADOS F.S",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245316",
+  "jornada": "19",
+  "fecha": "2027-04-10T22:00:00",
+  "equipo1": "EL RIO FC",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245321",
+  "jornada": "20",
+  "fecha": "2027-04-17T21:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "DESCANSO FC",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245325",
+  "jornada": "21",
+  "fecha": "2027-04-24T20:00:00",
+  "equipo1": "JORHINTON FC",
+  "equipo2": "PALANCAS FS",
+  "goles": null,
+  "golesc": null
+ },
+ {
+  "id": "245333",
+  "jornada": "22",
+  "fecha": "2027-05-08T21:00:00",
+  "equipo1": "PALANCAS FS",
+  "equipo2": "TANGER CF",
+  "goles": null,
+  "golesc": null
+ }
+]

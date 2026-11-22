@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Palancas FS · Calendario</title>
+<meta name="description" content="Resultados, clasificación y calendario de PALANCAS FS. Se actualiza solo.">
+<meta name="theme-color" content="#ef521b">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Palancas FS ⚽">
+<meta property="og:description" content="Resultados y calendario de PALANCAS FS (Fútbol Sala Móstoles). Se actualiza solo.">
+<meta property="og:image" content="og.jpg">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --brand: #ef521b; --brand-deep: #c4410e; --brand-soft: rgba(239,82,27,.13);
+    --black: #12090a; --panel: #1b1010; --panel-2: #241413; --line: #3a2019;
+    --text: #fdf3f0; --muted: #c9a397; --win: #3ccf7a; --draw: #c9a397; --loss: #ef5a4c;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; background: var(--black); color: var(--text);
+    font: 16px/1.45 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .display { font-family: "Bebas Neue", Impact, "Arial Narrow", sans-serif; letter-spacing: .03em; font-weight: 400; }
+
+  header {
+    position: relative; overflow: hidden; text-align: center;
+    padding: calc(36px + env(safe-area-inset-top)) 16px 30px;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(239,82,27,.28), transparent 60%),
+      repeating-linear-gradient(135deg, transparent 0 22px, rgba(239,82,27,.05) 22px 44px),
+      var(--black);
+    border-bottom: 3px solid var(--brand);
+  }
+  .crest {
+    width: 116px; height: 116px; display: block; margin: 0 auto 14px;
+    box-shadow: 0 0 0 4px var(--black), 0 0 0 6px var(--brand), 0 12px 40px rgba(239,82,27,.35);
+  }
+  header h1 { margin: 0; font-size: 48px; line-height: .95; color: var(--brand); }
+  header p { margin: 8px auto 0; max-width: 360px; color: var(--muted); font-size: 15px; }
+
+  main { max-width: 520px; margin: 0 auto; padding: 20px 16px 48px; }
+  section { margin-bottom: 18px; }
+  .label {
+    font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--brand); margin: 0 0 10px;
+  }
+
+  .next {
+    background: linear-gradient(160deg, var(--panel-2), var(--panel));
+    border: 1px solid var(--line); border-top: 3px solid var(--brand);
+    border-radius: 16px; padding: 18px 16px 16px; text-align: center;
+  }
+  .next .comp { color: var(--muted); font-size: 13px; }
+  .vs { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin: 14px 0; }
+  .team { font-weight: 700; font-size: 15px; line-height: 1.2; overflow-wrap: anywhere; }
+  .team.us { color: var(--brand); }
+  .vs .sep { font-size: 30px; color: var(--muted); }
+  .when { font-size: 30px; line-height: 1; color: var(--text); }
+  .countdown {
+    display: inline-block; margin-top: 12px; padding: 6px 12px; border-radius: 999px;
+    background: var(--brand-soft); color: var(--brand); font-weight: 600; font-size: 14px;
+  }
+
+  .actions { display: grid; gap: 10px; }
+  .btn {
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    width: 100%; min-height: 54px; padding: 14px 16px; border-radius: 14px;
+    font: 600 17px/1.2 Inter, sans-serif; text-decoration: none; cursor: pointer;
+    border: 1.5px solid transparent; transition: transform .08s ease, filter .15s ease;
+  }
+  .btn:active { transform: scale(.98); }
+  .btn svg { width: 22px; height: 22px; flex: none; }
+  .btn.primary { background: var(--brand); color: #fff; }
+  .btn.primary:hover { filter: brightness(1.06); }
+  .btn.secondary { background: var(--panel-2); color: var(--text); border-color: var(--brand); }
+  .btn.ghost { background: transparent; color: var(--muted); border-color: var(--line); font-weight: 500; font-size: 15px; min-height: 46px; }
+  .hint { color: var(--muted); font-size: 14px; text-align: center; margin: 2px 0 0; }
+
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .row { display: flex; align-items: center; gap: 12px; padding: 13px 14px; border-top: 1px solid var(--line); }
+  .row:first-child { border-top: 0; }
+  .date-box {
+    flex: none; width: 50px; text-align: center; border-radius: 10px; padding: 5px 0 4px;
+    background: var(--panel-2); border: 1px solid var(--line);
+  }
+  .date-box .d { font-size: 24px; line-height: 1; color: var(--brand); }
+  .date-box .m { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+  .info { min-width: 0; flex: 1; }
+  .info .t { font-weight: 600; font-size: 15px; line-height: 1.25; }
+  .info .t .us { color: var(--brand); }
+  .info .s { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .badge {
+    flex: none; width: 28px; height: 28px; border-radius: 8px; display: grid; place-items: center;
+    font-weight: 700; font-size: 13px; color: var(--black);
+  }
+  .badge.V { background: var(--win); } .badge.E { background: var(--draw); } .badge.D { background: var(--loss); }
+  .empty { padding: 16px; color: var(--muted); font-size: 14px; text-align: center; }
+  .record { display: flex; gap: 8px; margin-bottom: 10px; }
+  .record div {
+    flex: 1; text-align: center; background: var(--panel); border: 1px solid var(--line);
+    border-radius: 12px; padding: 8px 4px;
+  }
+  .record b { display: block; font-size: 26px; line-height: 1; }
+  .record span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+
+  details.help { color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); padding-top: 14px; }
+  details.help summary { cursor: pointer; color: var(--text); }
+  details.help b { color: var(--text); }
+  code { word-break: break-all; background: var(--panel-2); padding: 2px 6px; border-radius: 6px; font-size: 12px; }
+
+  nav.tabs {
+    position: sticky; top: 0; z-index: 10; display: flex; gap: 2px; padding: 8px 8px;
+    background: rgba(18,9,10,.92); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none;
+  }
+  nav.tabs::-webkit-scrollbar { display: none; }
+  nav.tabs a {
+    flex: 1 0 auto; text-align: center; padding: 9px 8px; border-radius: 10px; text-decoration: none;
+    color: var(--muted); font-weight: 600; font-size: 13px; white-space: nowrap;
+  }
+  nav.tabs a[aria-current="page"] { background: var(--brand); color: #fff; }
+  .panel[hidden] { display: none; }
+
+  .tbl-wrap { overflow-x: auto; }
+  table.tbl { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .tbl th { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); font-weight: 600;
+    text-align: center; padding: 10px 6px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tbl td { text-align: center; padding: 9px 6px; border-top: 1px solid var(--line); }
+  .tbl tr:first-child td { border-top: 0; }
+  .tbl .l { text-align: left; }
+  .tbl .name { text-align: left; font-weight: 500; max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .tbl tr.us td { background: var(--brand-soft); color: var(--brand); font-weight: 700; }
+  .tbl .pts { font-weight: 700; }
+  .tbl .dim { color: var(--muted); }
+  .pos-big { display: flex; gap: 10px; margin-bottom: 12px; }
+  .pos-big > div { flex: 1; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 12px; text-align: center; }
+  .pos-big b { display: block; font-size: 34px; line-height: 1; color: var(--brand); }
+  .pos-big span { font-size: 12px; color: var(--muted); }
+
+  .cal-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 10px; }
+  .cal-title-wrap { text-align: center; }
+  .cal-title-wrap h2 { margin: 0; font-size: 30px; line-height: 1; color: var(--brand); }
+  .cal-nav {
+    width: 44px; height: 44px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel);
+    color: var(--text); font-size: 26px; line-height: 1; cursor: pointer;
+  }
+  .cal-box { padding: 8px; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; touch-action: pan-y; }
+  .cal-dow { text-align: center; font-size: 11px; font-weight: 700; color: var(--muted); padding: 4px 0 6px; }
+  .cal-cell {
+    position: relative; aspect-ratio: 1 / 1.08; border: 1px solid transparent; border-radius: 10px;
+    background: transparent; color: var(--text); font: 500 15px/1 Inter, sans-serif; padding: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer;
+  }
+  .cal-cell.empty { cursor: default; }
+  .cal-cell.today .cal-num { color: var(--brand); font-weight: 800; }
+  .cal-cell.today::after { content: ""; position: absolute; top: 5px; right: 6px; width: 5px; height: 5px; border-radius: 50%; background: var(--brand); }
+  .cal-cell.has { background: var(--brand-soft); border-color: rgba(239,82,27,.45); }
+  .cal-cell.has .cal-num { font-weight: 700; }
+  .cal-cell.sel { border-color: var(--brand); box-shadow: 0 0 0 1px var(--brand) inset; }
+  .cal-sub { font-size: 10px; font-weight: 700; letter-spacing: .02em; }
+  .cal-sub.res { width: 18px; height: 16px; border-radius: 5px; display: grid; place-items: center; color: var(--black); }
+  .cal-sub.V { background: var(--win); } .cal-sub.E { background: var(--draw); } .cal-sub.D { background: var(--loss); }
+  .cal-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 10px; }
+  .cal-today { border: 1px solid var(--brand); background: transparent; color: var(--brand); border-radius: 999px; padding: 7px 14px; font: 600 13px Inter, sans-serif; cursor: pointer; }
+  .cal-card { text-align: center; margin-bottom: 10px; }
+  .cal-res.V { background: rgba(60,207,122,.14); color: var(--win); }
+  .cal-res.D { background: rgba(239,90,76,.14); color: var(--loss); }
+  .cal-res.E { background: var(--panel-2); color: var(--text); }
+  footer { text-align: center; color: #8c6a60; font-size: 12px; padding: 0 16px 32px; }
+  footer a { color: inherit; }
+</style>
+</head>
+<body>
+<header>
+  <img class="crest" src="escudo.png" alt="Escudo de Palancas FS" width="116" height="116">
+  <h1 class="display">Palancas FS</h1>
+  <p>Resultados y calendario. Se actualiza solo con cada jornada.</p>
+</header>
+
+<nav class="tabs" aria-label="Secciones">
+  <a href="#partidos" data-tab="partidos">Partidos</a>
+  <a href="#calendario" data-tab="calendario">Calendario</a>
+  <a href="#clasificacion" data-tab="clasificacion">Clasificación</a>
+  <a href="#goleadores" data-tab="goleadores">Goleadores</a>
+</nav>
+
+<main>
+<div class="panel" id="tab-partidos">
+  <section>
+    <h2 class="label">Próximo partido</h2>
+    <div class="next" id="next"><div class="empty">Cargando…</div></div>
+  </section>
+
+  <section>
+    <h2 class="label">Añadir a tu calendario</h2>
+    <div class="actions">
+      <a id="ios" class="btn primary" href="webcal://palancasfs-calendario.vercel.app/palancas.ics">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M16.37 12.5c-.02-2.2 1.8-3.26 1.88-3.31-1.03-1.5-2.62-1.7-3.18-1.73-1.35-.14-2.64.8-3.33.8-.69 0-1.74-.78-2.87-.76-1.47.02-2.83.86-3.59 2.18-1.53 2.66-.39 6.6 1.1 8.75.73 1.05 1.6 2.24 2.73 2.2 1.1-.05 1.51-.71 2.84-.71 1.32 0 1.7.71 2.86.69 1.18-.02 1.93-1.07 2.65-2.13.84-1.22 1.18-2.4 1.2-2.46-.03-.01-2.3-.88-2.32-3.52zM14.2 6.03c.6-.73 1.01-1.75.9-2.76-.87.04-1.92.58-2.55 1.31-.56.64-1.05 1.68-.92 2.67.97.08 1.96-.49 2.57-1.22z"/></svg>
+        Añadir en iPhone / Mac
+      </a>
+      <a id="google" class="btn secondary" href="https://calendar.google.com/calendar/r?cid=webcal%3A%2F%2Fpalancasfs-calendario.vercel.app%2Fpalancas.ics">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84A11 11 0 0 0 12 23z"/><path fill="#FBBC05" d="M5.84 14.1A6.6 6.6 0 0 1 5.5 12c0-.73.13-1.44.34-2.1V7.06H2.18A11 11 0 0 0 1 12c0 1.78.43 3.45 1.18 4.94l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84C6.71 7.31 9.14 5.38 12 5.38z"/></svg>
+        Añadir en Google Calendar
+      </a>
+      <button id="copy" class="btn ghost" type="button">Copiar enlace del calendario</button>
+    </div>
+    <p class="hint" id="hint"></p>
+  </section>
+
+  <section>
+    <h2 class="label">Próximas jornadas</h2>
+    <div class="card" id="upcoming"><div class="empty">Cargando…</div></div>
+  </section>
+
+  <section id="results-section">
+    <h2 class="label">Resultados de la temporada</h2>
+    <div class="record" id="record"></div>
+    <div class="card" id="results"></div>
+  </section>
+
+  <details class="help">
+    <summary>¿Problemas? Instrucciones manuales</summary>
+    <p><b>iPhone:</b> Ajustes › Calendario › Cuentas › Añadir cuenta › Otra › Añadir calendario suscrito, y pega el enlace.</p>
+    <p><b>Android:</b> el botón de Google añade el calendario a tu cuenta (con la sesión iniciada).</p>
+    <p>Enlace: <code id="url"></code></p>
+  </details>
+</div>
+
+<div class="panel" id="tab-calendario" hidden>
+  <section>
+    <div class="cal-head">
+      <button id="cal-prev" class="cal-nav" type="button" aria-label="Mes anterior">‹</button>
+      <div class="cal-title-wrap"><h2 id="cal-title" class="display"></h2><div id="cal-count" class="comp"></div></div>
+      <button id="cal-next" class="cal-nav" type="button" aria-label="Mes siguiente">›</button>
+    </div>
+    <div class="card cal-box"><div class="cal-grid" id="cal-grid"></div></div>
+    <div class="cal-foot">
+      <div id="cal-legend" class="cal-legend"></div>
+      <button id="cal-today" class="cal-today" type="button">Hoy</button>
+    </div>
+  </section>
+  <section id="cal-day"></section>
+</div>
+
+<div class="panel" id="tab-clasificacion" hidden>
+  <section>
+    <div class="pos-big" id="comp-summary"></div>
+    <h2 class="label">Clasificación · 1º Sábados</h2>
+    <div class="card tbl-wrap" id="standings"><div class="empty">Cargando…</div></div>
+  </section>
+</div>
+
+<div class="panel" id="tab-goleadores" hidden>
+  <section>
+    <h2 class="label">Goleadores · Palancas FS</h2>
+    <div class="card tbl-wrap" id="scorers"><div class="empty">Cargando…</div></div>
+  </section>
+</div>
+</main>
+<footer><span id="updated"></span>Datos de <a href="http://www.campeonatosmunicipalesmostoles.org/FutbolSala_27850.php">campeonatosmunicipalesmostoles.org</a> · se actualiza varias veces al día</footer>
+
+<script>
+  const US = "PALANCAS FS";
+  const ICS_URL = window.location.origin + window.location.pathname.replace(/[^/]*$/, "") + "palancas.ics";
+  const $ = id => document.getElementById(id);
+  $("url").textContent = ICS_URL;
+  $("ios").href = "webcal://" + window.location.host + window.location.pathname.replace(/[^/]*$/, "") + "palancas.ics";
+  $("google").href = "https://calendar.google.com/calendar/r?cid=" + encodeURIComponent("webcal://" + window.location.host + window.location.pathname.replace(/[^/]*$/, "") + "palancas.ics");
+
+  const ua = navigator.userAgent;
+  if (/iPhone|iPad|Macintosh/.test(ua)) {
+    $("hint").textContent = "Toca el botón naranja y confirma «Suscribirse».";
+  } else if (/Android/.test(ua)) {
+    const ios = $("ios"), g = $("google");
+    ios.classList.replace("primary", "secondary"); g.classList.replace("secondary", "primary");
+    g.parentNode.insertBefore(g, ios);
+    $("hint").textContent = "Toca el botón naranja con tu cuenta de Google iniciada y pulsa «Añadir».";
+  }
+
+  $("copy").addEventListener("click", async (e) => {
+    try { await navigator.clipboard.writeText(ICS_URL); e.currentTarget.textContent = "Enlace copiado ✓"; }
+    catch { prompt("Copia el enlace:", ICS_URL); }
+  });
+
+  const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+  const fmtLong = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" });
+  const fmtTime = new Intl.DateTimeFormat("es-ES", { hour: "2-digit", minute: "2-digit" });
+  const fmtShort = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short" });
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+
+  let MATCHES = [], STANDINGS = [], SCORERS = [];
+
+  function result(m) {
+    if (m.goles == null) return "";
+    const ours = m.equipo1 === US ? m.goles : m.golesc;
+    const theirs = m.equipo1 === US ? m.golesc : m.goles;
+    return ours > theirs ? "V" : ours < theirs ? "D" : "E";
+  }
+  const isUs = n => n === US;
+
+  function countdown(d) {
+    const ms = d - Date.now();
+    if (ms < 0) return "¡Jugando ahora!";
+    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const target = new Date(d); target.setHours(0, 0, 0, 0);
+    const days = Math.round((target - today) / 864e5);
+    const hours = Math.floor(ms / 36e5), mins = Math.floor(ms / 6e4) % 60;
+    if (days > 1) return `Faltan ${days} días`;
+    if (days === 1) return `Mañana · faltan ${hours} h`;
+    return hours ? `Hoy · faltan ${hours} h ${mins} min` : `Faltan ${mins} min`;
+  }
+
+  function renderNext(m) {
+    const box = $("next"); box.innerHTML = "";
+    if (!m) { box.appendChild(el("div", "empty", "No hay partidos publicados todavía.")); return; }
+    box.appendChild(el("div", "comp", "Fútbol Sala Móstoles · Jornada " + m.jornada));
+    const vs = el("div", "vs");
+    vs.append(el("div", "team" + (m.equipo1 === US ? " us" : ""), m.equipo1),
+              el("div", "sep display", "VS"),
+              el("div", "team" + (m.equipo2 === US ? " us" : ""), m.equipo2));
+    box.appendChild(vs);
+    const d = new Date(m.fecha);
+    box.appendChild(el("div", "when display", `${cap(fmtLong.format(d))} · ${fmtTime.format(d)}`));
+    const cd = el("div", "countdown", countdown(d)); box.appendChild(cd);
+    setInterval(() => cd.textContent = countdown(d), 30000);
+  }
+
+  function matchRow(m) {
+    const d = new Date(m.fecha);
+    const r = el("div", "row");
+    const db = el("div", "date-box");
+    db.append(el("div", "d display", d.getDate()), el("div", "m", fmtShort.format(d).replace(/^\\d+\\s*/, "").replace(".", "")));
+    const info = el("div", "info"); const t = el("div", "t");
+    const nm = n => el("span", n === US ? "us" : null, n);
+    const score = m.goles == null ? "vs" : `${m.goles}-${m.golesc}`;
+    t.append(nm(m.equipo1), document.createTextNode(` ${score} `), nm(m.equipo2));
+    info.appendChild(t);
+    info.appendChild(el("div", "s", `${fmtTime.format(d)} · Jornada ${m.jornada}`));
+    r.append(db, info);
+    const res = result(m);
+    if (res) r.appendChild(el("div", "badge " + res, res));
+    return r;
+  }
+
+  function renderMatches() {
+    const played = MATCHES.filter(m => m.goles != null).sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    const upcoming = MATCHES.filter(m => m.goles == null).sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+
+    renderNext(upcoming[0] || null);
+
+    const up = $("upcoming"); up.innerHTML = "";
+    if (upcoming.length) {
+      upcoming.slice(0, 6).forEach(m => up.appendChild(matchRow(m)));
+    } else up.appendChild(el("div", "empty", "Temporada terminada."));
+
+    // récord
+    let v = 0, e = 0, d = 0;
+    played.forEach(m => { const r = result(m); if (r === "V") v++; else if (r === "D") d++; else e++; });
+    const rec = $("record"); rec.innerHTML = "";
+    [["PJ", played.length], ["V", v], ["E", e], ["D", d]].forEach(([l, n]) => {
+      const b = el("div"); b.append(el("b", "display", n), el("span", null, l)); rec.appendChild(b);
+    });
+
+    const res = $("results"); res.innerHTML = "";
+    if (played.length) {
+      [...played].reverse().forEach(m => res.appendChild(matchRow(m)));
+    } else res.appendChild(el("div", "empty", "Todavía no se han jugado partidos."));
+  }
+
+  // ---------- Clasificación ----------
+  function renderStandings() {
+    const me = STANDINGS.find(r => r.equipo === US);
+    const sum = $("comp-summary"); sum.innerHTML = "";
+    if (me) {
+      [[`${me.pos}º`, `de ${STANDINGS.length}`], [me.pts, "puntos"], [`${me.pg}-${me.pe}-${me.pp}`, "V-E-D"]].forEach(([b, s]) => {
+        const d = el("div"); d.append(el("b", "display", b), el("span", null, s)); sum.appendChild(d);
+      });
+    }
+    const box = $("standings"); box.innerHTML = "";
+    if (!STANDINGS.length) { box.appendChild(el("div", "empty", "Sin clasificación todavía.")); return; }
+    const t = el("table", "tbl");
+    const thead = el("thead"), hr = el("tr");
+    ["#", "Equipo", "PJ", "G", "E", "P", "DG", "Pts"].forEach(h => hr.appendChild(el("th", h === "Equipo" ? "l" : null, h)));
+    thead.appendChild(hr); t.appendChild(thead);
+    const tb = el("tbody");
+    STANDINGS.forEach(r => {
+      const tr = el("tr", r.equipo === US ? "us" : null);
+      const cells = [r.pos, r.equipo, r.pj, r.pg, r.pe, r.pp, (r.dg > 0 ? "+" : "") + r.dg, r.pts];
+      cells.forEach((v, i) => {
+        const td = el("td", i === 1 ? "name" : i === 7 ? "pts" : null, v);
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb); box.appendChild(t);
+  }
+
+  // ---------- Goleadores ----------
+  function renderScorers() {
+    const box = $("scorers"); box.innerHTML = "";
+    if (!SCORERS.length) { box.appendChild(el("div", "empty", "Sin datos de goleadores todavía.")); return; }
+    const t = el("table", "tbl");
+    const thead = el("thead"), hr = el("tr");
+    ["#", "Jugador", "PJ", "⚽"].forEach(h => hr.appendChild(el("th", h === "Jugador" ? "l" : null, h)));
+    thead.appendChild(hr); t.appendChild(thead);
+    const tb = el("tbody");
+    SCORERS.forEach(r => {
+      const tr = el("tr");
+      tr.append(el("td", "dim", r.pos), el("td", "name", r.nombre), el("td", null, r.pj), el("td", "pts", r.goles));
+      tb.appendChild(tr);
+    });
+    t.appendChild(tb); box.appendChild(t);
+  }
+
+  // ---------- Calendario mensual ----------
+  const DOW = ["L", "M", "X", "J", "V", "S", "D"];
+  const fmtMonth = new Intl.DateTimeFormat("es-ES", { month: "long", year: "numeric" });
+  const fmtDay = new Intl.DateTimeFormat("es-ES", { weekday: "long", day: "numeric", month: "long" });
+  const key = d => `${d.getFullYear()}-${d.getMonth()}-${d.getDate()}`;
+  const sameDay = (a, b) => key(a) === key(b);
+  let view, selected;
+
+  function renderMonth() {
+    $("cal-title").textContent = cap(fmtMonth.format(view));
+    const grid = $("cal-grid"); grid.innerHTML = "";
+    DOW.forEach(d => grid.appendChild(el("div", "cal-dow", d)));
+    const first = new Date(view.getFullYear(), view.getMonth(), 1);
+    const offset = (first.getDay() + 6) % 7;
+    const days = new Date(view.getFullYear(), view.getMonth() + 1, 0).getDate();
+    const today = new Date();
+    const byDay = {};
+    MATCHES.forEach(m => (byDay[key(new Date(m.fecha))] ||= []).push(m));
+    for (let i = 0; i < offset; i++) grid.appendChild(el("div", "cal-cell empty"));
+    let count = 0;
+    for (let d = 1; d <= days; d++) {
+      const date = new Date(view.getFullYear(), view.getMonth(), d);
+      const ms = byDay[key(date)] || [];
+      count += ms.length;
+      const cell = el("button", "cal-cell");
+      cell.type = "button";
+      cell.appendChild(el("span", "cal-num", d));
+      if (sameDay(date, today)) cell.classList.add("today");
+      if (selected && sameDay(date, selected)) cell.classList.add("sel");
+      if (ms.length) {
+        cell.classList.add("has");
+        const r = result(ms[0]);
+        cell.appendChild(el("span", "cal-sub " + (r ? "res " + r : ""), r || fmtTime.format(new Date(ms[0].fecha))));
+      }
+      cell.addEventListener("click", () => { selected = date; renderMonth(); renderDay(); });
+      grid.appendChild(cell);
+    }
+    $("cal-count").textContent = count ? `${count} partido${count > 1 ? "s" : ""} este mes` : "Sin partidos este mes";
+  }
+
+  function renderDay() {
+    const box = $("cal-day"); box.innerHTML = "";
+    if (!selected) return;
+    const ms = MATCHES.filter(m => sameDay(new Date(m.fecha), selected));
+    box.appendChild(el("h2", "label", cap(fmtDay.format(selected))));
+    if (!ms.length) { box.appendChild(el("div", "card empty", "No hay partido este día.")); return; }
+    ms.forEach(m => {
+      const c = el("div", "next cal-card");
+      c.appendChild(el("div", "comp", "Jornada " + m.jornada));
+      const vs = el("div", "vs");
+      const tn = n => el("div", "team" + (n === US ? " us" : ""), n);
+      const mid = m.goles == null ? el("div", "sep display", "VS") : el("div", "sep display", `${m.goles}-${m.golesc}`);
+      vs.append(tn(m.equipo1), mid, tn(m.equipo2));
+      c.appendChild(vs);
+      c.appendChild(el("div", "where", `🕒 ${fmtTime.format(new Date(m.fecha))}`));
+      const r = result(m);
+      if (r) c.appendChild(el("div", "countdown cal-res " + r, r === "V" ? "Victoria" : r === "D" ? "Derrota" : "Empate"));
+      box.appendChild(c);
+    });
+  }
+
+  const go = delta => { view = new Date(view.getFullYear(), view.getMonth() + delta, 1); renderMonth(); };
+  $("cal-prev").addEventListener("click", () => go(-1));
+  $("cal-next").addEventListener("click", () => go(1));
+  $("cal-today").addEventListener("click", () => {
+    const now = new Date(); view = new Date(now.getFullYear(), now.getMonth(), 1); selected = now;
+    renderMonth(); renderDay();
+  });
+  let x0 = null;
+  $("cal-grid").addEventListener("touchstart", e => { x0 = e.touches[0].clientX; }, { passive: true });
+  $("cal-grid").addEventListener("touchend", e => {
+    if (x0 === null) return;
+    const dx = e.changedTouches[0].clientX - x0; x0 = null;
+    if (Math.abs(dx) > 50) go(dx < 0 ? 1 : -1);
+  });
+
+  // ---------- Pestañas ----------
+  const TABS = ["partidos", "calendario", "clasificacion", "goleadores"];
+  function showTab() {
+    const tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "partidos";
+    TABS.forEach(t => { $("tab-" + t).hidden = t !== tab; });
+    document.querySelectorAll("nav.tabs a").forEach(a => {
+      if (a.dataset.tab === tab) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+    });
+  }
+  window.addEventListener("hashchange", showTab);
+  showTab();
+
+  // ---------- Carga ----------
+  Promise.all([
+    fetch("matches.json", { cache: "no-store" }).then(r => r.json()),
+    fetch("standings.json", { cache: "no-store" }).then(r => r.json()),
+    fetch("scorers.json", { cache: "no-store" }).then(r => r.json()),
+  ]).then(([m, s, g]) => {
+    MATCHES = m; STANDINGS = s; SCORERS = g;
+    renderMatches();
+    renderStandings();
+    renderScorers();
+    const now = new Date();
+    const next = m.find(x => x.goles == null && new Date(x.fecha) >= new Date(now - 2 * 36e5));
+    const focus = next ? new Date(next.fecha) : (m.length ? new Date(m[m.length - 1].fecha) : now);
+    view = new Date(focus.getFullYear(), focus.getMonth(), 1);
+    selected = next ? new Date(next.fecha) : null;
+    renderMonth(); renderDay();
+  }).catch(err => {
+    console.error(err);
+    ["next", "upcoming", "results", "standings", "scorers"].forEach(id => {
+      $(id).innerHTML = '<div class="empty">No se pudieron cargar los datos.</div>';
+    });
+  });
+</script>
+</body>
+</html>
