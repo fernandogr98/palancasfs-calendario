@@ -1,12 +1,18 @@
 name: Actualizar calendario
 
+# SOLO manual (workflow_dispatch). El escritor automático es el updater de Hermes
+# (cron diario 08:00 + vigilante cada 15 min). Antes esto también corría cada 6 h
+# por schedule y pisaba al updater de Hermes, provocando rechazos de push
+# ("remote contains work that you do not have locally") por doble escritor.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 */6 * * *"
 
 permissions:
   contents: write
+
+concurrency:
+  group: actualizar
+  cancel-in-progress: false
 
 jobs:
   update:
@@ -27,5 +33,6 @@ jobs:
           git add docs
           if ! git diff --cached --quiet; then
             git commit -m "Actualiza calendario $(date -u +%F\ %H:%M)"
+            git pull --rebase origin main
             git push
           fi
