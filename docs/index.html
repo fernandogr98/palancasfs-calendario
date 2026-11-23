@@ -192,6 +192,41 @@
   .search { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: 500 15px Inter, sans-serif; margin-bottom: 12px; }
   .search::placeholder { color: var(--muted); }
   .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--brand); background: var(--brand-soft); border-radius: 6px; padding: 2px 7px; }
+  /* Pestaña Liga (acordeón por equipo) */
+  .team-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 8px; }
+  .team-card.us { border-color: var(--brand); }
+  .team-card > summary { list-style: none; cursor: pointer; }
+  .team-card > summary::-webkit-details-marker { display: none; }
+  .team-row { display: flex; align-items: center; gap: 10px; padding: 12px 14px; }
+  .team-card[open] .team-row { background: var(--panel-2); }
+  .pos-num { flex: none; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--panel-2); border: 1px solid var(--line); font-weight: 700; font-size: 16px; color: var(--brand); }
+  .team-card.us .pos-num { background: var(--brand-soft); border-color: var(--brand); }
+  .team-info { min-width: 0; flex: 1; }
+  .team-info .n { font-weight: 700; font-size: 15px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .team-card.us .team-info .n { color: var(--brand); }
+  .team-info .r { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  .team-form { flex: none; display: flex; gap: 4px; }
+  .team-form .badge { width: 21px; height: 21px; border-radius: 6px; font-size: 11px; }
+  .team-pts { flex: none; text-align: right; }
+  .team-pts b { display: block; font-size: 19px; line-height: 1; color: var(--brand); }
+  .team-pts span { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+  .chev { flex: none; color: var(--muted); transition: transform .2s ease; font-size: 14px; }
+  .team-card[open] .chev { transform: rotate(180deg); color: var(--brand); }
+  .team-detail { padding: 4px 14px 14px; background: var(--panel-2); border-top: 1px dashed var(--line); }
+  .record-strip { display: flex; gap: 6px; margin: 10px 0; }
+  .record-strip div { flex: 1; text-align: center; background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 7px 2px; }
+  .record-strip b { display: block; font-size: 18px; line-height: 1; }
+  .record-strip span { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .team-detail .tbl { table-layout: fixed; }
+  .team-detail .tbl th.w-date { width: 68px; }
+  .team-detail .tbl td { font-size: 13px; }
+  .team-detail .tbl th.w-loc { width: 50px; }
+  .team-detail .tbl th.w-score { width: 64px; }
+  .team-detail .tbl th.w-res { width: 32px; }
+  .team-detail .tbl td.l { text-align: left; padding-left: 4px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 600; font-size: 13px; }
+  .team-detail .tbl td.l .us { color: var(--brand); }
+  .tbl .pv { font-size: 10px; color: var(--muted); line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .tbl .jd { font-size: 10px; color: var(--muted); }
   footer { text-align: center; color: #8c6a60; font-size: 12px; padding: 0 16px 32px; }
   footer a { color: inherit; }
 </style>
@@ -292,10 +327,10 @@
 
 <div class="panel" id="tab-liga" hidden>
   <section>
-    <h2 class="label">Liga · S1 (1º Sábados)</h2>
-    <input class="search" id="liga-search" type="search" placeholder="Buscar equipo…" aria-label="Buscar equipo">
+    <h2 class="label">Equipos de la liga</h2>
     <div class="pills" id="liga-pills"></div>
-    <div class="card" id="liga-matches"><div class="empty">Elige un equipo.</div></div>
+    <input class="search" id="liga-search" type="search" placeholder="Buscar equipo…" aria-label="Buscar equipo">
+    <div id="liga-teams"><div class="empty">Cargando…</div></div>
   </section>
 </div>
 </main>
@@ -531,43 +566,128 @@
     return r;
   }
 
-  // ---------- Liga ----------
-  let LIGA_TEAM = null;
-  function renderLiga() {
-    const L = STATS && STATS.liga;
-    const box = $("liga-matches");
-    if (!L || !L.matches || !L.matches.length) { box.innerHTML = '<div class="empty">Sin datos de liga.</div>'; return; }
-    const teams = [...new Set(L.standings.map(s => s.equipo))].sort((a, b) => a.localeCompare(b, "es"));
-    const term = ($("liga-search").value || "").toLowerCase();
-    const shown = teams.filter(t => t.toLowerCase().includes(term));
-    if (!LIGA_TEAM || !teams.includes(LIGA_TEAM)) LIGA_TEAM = shown[0] || teams[0];
-    const pillsBox = $("liga-pills"); pillsBox.innerHTML = "";
-    shown.forEach(t => {
-      const b = el("button", null, t);
-      b.type = "button"; b.setAttribute("aria-pressed", String(t === LIGA_TEAM));
-      b.addEventListener("click", () => { LIGA_TEAM = t; renderLiga(); });
-      pillsBox.appendChild(b);
+  // ---------- Liga (acordeón por equipo, estilo Achiperros) ----------
+  function ligaTable(columns, rows) {
+    const t = el("table", "tbl");
+    const thead = el("thead"), hr = el("tr");
+    columns.forEach(c => hr.appendChild(el("th", c.cls || "", c.label)));
+    thead.appendChild(hr); t.appendChild(thead);
+    const tb = el("tbody");
+    rows.forEach(r => {
+      const tr = el("tr");
+      columns.forEach(c => {
+        const v = c.get(r);
+        const td = el("td", c.cls || null);
+        if (v instanceof Node) td.appendChild(v); else td.textContent = v == null ? "" : v;
+        tr.appendChild(td);
+      });
+      tb.appendChild(tr);
     });
-    box.innerHTML = "";
-    if (!shown.length) { box.appendChild(el("div", "empty", "Ningún equipo coincide.")); return; }
-    const ms = L.matches.filter(m => m.equipo1 === LIGA_TEAM || m.equipo2 === LIGA_TEAM)
-      .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
-    ms.forEach(m => box.appendChild(ligaRow(m)));
+    t.appendChild(tb);
+    return t;
   }
 
-  function ligaRow(m) {
-    const d = new Date(m.fecha);
-    const r = el("div", "row");
-    const db = el("div", "date-box");
-    db.append(el("div", "d display", d.getDate()), el("div", "m", fmtShort.format(d).replace(/^\d+\s*/, "").replace(".", "")));
-    const info = el("div", "info"); const t = el("div", "t");
-    const nm = n => el("span", n === LIGA_TEAM ? "us" : null, n);
-    const score = m.goles == null ? "vs" : `${m.goles}-${m.golesc}`;
-    t.append(nm(m.equipo1), document.createTextNode(` ${score} `), nm(m.equipo2));
-    info.appendChild(t);
-    info.appendChild(el("div", "s", `J${m.jornada}${m.pabellon ? " · 📍 " + m.pabellon : ""}`));
-    r.append(db, info);
-    return r;
+  function resOf(team, m) {
+    const home = m.equipo1 === team;
+    const gf = home ? m.goles : m.golesc, gc = home ? m.golesc : m.goles;
+    return gf > gc ? "V" : gf < gc ? "D" : "E";
+  }
+
+  function formOf(team, matches) {
+    const played = matches.filter(m => m.goles != null)
+      .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    return played.slice(-5).map(m => resOf(team, m));
+  }
+
+  function teamCard(s, matches) {
+    const name = s.equipo;
+    const played = matches.filter(m => m.goles != null).sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    const pend = matches.filter(m => m.goles == null).sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    const rows = played.concat(pend);
+
+    const wrap = el("details", "team-card" + (name === US ? " us" : ""));
+    const sum = el("summary");
+    const row = el("div", "team-row");
+    const info = el("div", "team-info");
+    info.append(el("div", "n", name), el("div", "r", `PJ ${s.pj} · ${s.pg}V ${s.pe}E ${s.pp}D`));
+    const form = el("div", "team-form");
+    formOf(name, matches).forEach(r => form.appendChild(el("span", "badge " + r, r)));
+    const pts = el("div", "team-pts");
+    pts.append(el("b", null, s.pts), el("span", null, "pts"));
+    row.append(el("div", "pos-num", s.pos), info, form, pts, el("span", "chev", "▾"));
+    sum.appendChild(row);
+    wrap.appendChild(sum);
+
+    const det = el("div", "team-detail");
+    const rec = el("div", "record-strip");
+    [["G", s.pg], ["E", s.pe], ["P", s.pp], ["GF", s.gf], ["GC", s.gc]].forEach(([l, v]) => {
+      const d = el("div");
+      d.append(el("b", null, v), el("span", null, l));
+      rec.appendChild(d);
+    });
+    det.appendChild(rec);
+
+    if (rows.length) {
+      det.appendChild(ligaTable([
+        { label: "Fecha", cls: "w-date", get: m => {
+            const d = el("div");
+            d.append(el("span", null, fmtShort.format(new Date(m.fecha))));
+            d.appendChild(el("div", "jd", "J" + m.jornada));
+            return d;
+          } },
+        { label: "Rival", cls: "l", get: m => {
+            const d = el("div");
+            const rival = m.equipo1 === name ? m.equipo2 : m.equipo1;
+            d.appendChild(el("span", rival === US ? "us" : null, rival));
+            if (m.pabellon) d.appendChild(el("div", "pv", "📍 " + m.pabellon));
+            return d;
+          } },
+        { label: "", cls: "w-loc", get: m => el("span", "dim", m.equipo1 === name ? "Casa" : "Fuera") },
+        { label: "Marcador", cls: "w-score", get: m => {
+            if (m.goles == null) return el("span", "dim", "vs");
+            const home = m.equipo1 === name;
+            return `${home ? m.goles : m.golesc}-${home ? m.golesc : m.goles}`;
+          } },
+        { label: "", cls: "w-res", get: m => m.goles == null
+            ? null
+            : el("span", "badge " + resOf(name, m), resOf(name, m)) },
+      ], rows));
+    } else {
+      det.appendChild(el("div", "empty", "Sin partidos."));
+    }
+    wrap.appendChild(det);
+    return wrap;
+  }
+
+  function renderLiga() {
+    const L = STATS && STATS.liga;
+    const box = $("liga-teams");
+    if (!box) return;
+    if (!L || !L.matches || !L.matches.length) {
+      box.innerHTML = '<div class="empty">Sin datos de liga.</div>';
+      return;
+    }
+    const pills = $("liga-pills");
+    pills.innerHTML = "";
+    const label = L.division ? L.division.replace(/^Fútbol Sala[^·]*·\s*/, "") : "Liga";
+    const b = el("button", null, label);
+    b.type = "button"; b.setAttribute("aria-pressed", "true");
+    pills.appendChild(b);
+
+    const term = ($("liga-search").value || "").trim().toLowerCase();
+    const teams = L.standings.slice()
+      .sort((x, y) => (x.pos || 99) - (y.pos || 99))
+      .filter(s => !term || s.equipo.toLowerCase().includes(term));
+
+    box.innerHTML = "";
+    if (!teams.length) {
+      box.appendChild(el("div", "empty", "Ningún equipo coincide con la búsqueda."));
+      return;
+    }
+    teams.forEach(s => {
+      const ms = L.matches.filter(m => m.equipo1 === s.equipo || m.equipo2 === s.equipo);
+      box.appendChild(teamCard(s, ms));
+    });
   }
 
   // ---------- Calendario mensual ----------
