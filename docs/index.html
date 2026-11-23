@@ -255,8 +255,7 @@
   <a href="#calendario" data-tab="calendario">Calendario</a>
   <a href="#clasificacion" data-tab="clasificacion">Clasificación</a>
   <a href="#equipo" data-tab="equipo">Equipo</a>
-  <a href="#rival" data-tab="rival">Rival</a>
-  <a href="#liga" data-tab="liga">Liga</a>
+  <a href="#equipos" data-tab="equipos">Equipos</a>
 </nav>
 
 <main>
@@ -333,17 +332,15 @@
   </section>
 </div>
 
-<div class="panel" id="tab-rival" hidden>
-  <section>
+<div class="panel" id="tab-equipos" hidden>
+  <section id="ficha">
     <h2 class="label">Ficha de equipo</h2>
     <select class="search" id="rival-select" aria-label="Elegir equipo"></select>
     <div id="rival"><div class="empty">Cargando…</div></div>
   </section>
-</div>
 
-<div class="panel" id="tab-liga" hidden>
-  <section>
-    <h2 class="label">Equipos de la liga</h2>
+  <section id="lista-equipos">
+    <h2 class="label">Todos los equipos</h2>
     <div class="pills" id="liga-pills"></div>
     <input class="search" id="liga-search" type="search" placeholder="Buscar equipo…" aria-label="Buscar equipo">
     <div id="liga-teams"><div class="empty">Cargando…</div></div>
@@ -557,7 +554,7 @@
 
     // cabecera
     const head = el("section");
-    head.appendChild(el("h2", "label", name === US ? "Nuestro equipo" : "Datos del equipo"));
+    head.appendChild(el("h2", "label", name === US ? "Nuestro equipo" : "Resumen del equipo"));
     const card = el("div", "next"); card.style.textAlign = "left";
     const rh = el("div", "rival-head");
     rh.appendChild(el("h3", "display", name));
@@ -768,6 +765,18 @@
     } else {
       det.appendChild(el("div", "empty", "Sin partidos."));
     }
+    const btn = el("button", "btn ghost", "Ver ficha completa");
+    btn.type = "button";
+    btn.style.marginTop = "10px";
+    btn.addEventListener("click", ev => {
+      ev.preventDefault(); ev.stopPropagation();
+      RIVAL_TEAM = name;
+      const sel = $("rival-select"); if (sel) sel.value = name;
+      renderRival();
+      const f = $("ficha"); if (f) f.scrollIntoView({ behavior: "smooth", block: "start" });
+      else window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    det.appendChild(btn);
     wrap.appendChild(det);
     return wrap;
   }
@@ -880,9 +889,11 @@
   });
 
   // ---------- Pestañas ----------
-  const TABS = ["partidos", "calendario", "clasificacion", "equipo", "rival", "liga"];
+  const TABS = ["partidos", "calendario", "clasificacion", "equipo", "equipos"];
+  const TAB_ALIAS = { rival: "equipos", liga: "equipos" };   // enlaces antiguos
   function showTab() {
-    const tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "partidos";
+    const raw = location.hash.slice(1);
+    const tab = TABS.includes(raw) ? raw : (TAB_ALIAS[raw] || "partidos");
     TABS.forEach(t => { $("tab-" + t).hidden = t !== tab; });
     document.querySelectorAll("nav.tabs a").forEach(a => {
       if (a.dataset.tab === tab) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
