@@ -1,11 +1,14 @@
 name: Actualizar calendario
 
-# SOLO manual (workflow_dispatch). El escritor automático es el updater de Hermes
-# (cron diario 08:00 + vigilante cada 15 min). Antes esto también corría cada 6 h
-# por schedule y pisaba al updater de Hermes, provocando rechazos de push
-# ("remote contains work that you do not have locally") por doble escritor.
+# Escritor automático principal: updater de Hermes (cron diario 08:00 + vigilante
+# cada 15 min). Este workflow es un RESPALDO diario que mantiene la web al día
+# aunque el LXC de Hermes esté apagado. Corre 1×/día a una hora que no pisa a
+# Hermes (03:00 UTC = 04:00 Madrid; Hermes base = 07:00 UTC, vigilante 10-22+23,0,1 UTC).
+# Ambos escritores hacen commit → pull --rebase → push, así que no se pisan.
 on:
   workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * *"
 
 permissions:
   contents: write
