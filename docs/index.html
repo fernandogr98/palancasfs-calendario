@@ -174,6 +174,24 @@
   .cal-res.V { background: rgba(60,207,122,.14); color: var(--win); }
   .cal-res.D { background: rgba(239,90,76,.14); color: var(--loss); }
   .cal-res.E { background: var(--panel-2); color: var(--text); }
+  .kv { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 12px 0 4px; }
+  .kv div { background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 4px; text-align: center; }
+  .kv b { display: block; font-size: 22px; line-height: 1.1; color: var(--brand); }
+  .kv span { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; }
+  .rival-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .rival-head h3 { margin: 0; font-size: 26px; line-height: 1.05; }
+  .link-gold { color: var(--brand); font-weight: 600; font-size: 14px; text-decoration: none; }
+  .form { display: flex; gap: 5px; }
+  .form .badge { width: 26px; height: 26px; font-size: 12px; }
+  .pad { padding: 14px; }
+  .note { color: var(--muted); font-size: 13px; margin: 8px 2px 0; }
+  .where { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 10px; }
+  .pills button { border: 1px solid var(--line); background: var(--panel); color: var(--text); border-radius: 999px; padding: 6px 12px; font: 600 13px Inter, sans-serif; cursor: pointer; }
+  .pills button[aria-pressed="true"] { background: var(--brand); color: #fff; border-color: var(--brand); }
+  .search { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: 500 15px Inter, sans-serif; margin-bottom: 12px; }
+  .search::placeholder { color: var(--muted); }
+  .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--brand); background: var(--brand-soft); border-radius: 6px; padding: 2px 7px; }
   footer { text-align: center; color: #8c6a60; font-size: 12px; padding: 0 16px 32px; }
   footer a { color: inherit; }
 </style>
@@ -189,7 +207,9 @@
   <a href="#partidos" data-tab="partidos">Partidos</a>
   <a href="#calendario" data-tab="calendario">Calendario</a>
   <a href="#clasificacion" data-tab="clasificacion">Clasificación</a>
-  <a href="#goleadores" data-tab="goleadores">Goleadores</a>
+  <a href="#equipo" data-tab="equipo">Equipo</a>
+  <a href="#rival" data-tab="rival">Rival</a>
+  <a href="#liga" data-tab="liga">Liga</a>
 </nav>
 
 <main>
@@ -258,10 +278,24 @@
   </section>
 </div>
 
-<div class="panel" id="tab-goleadores" hidden>
+<div class="panel" id="tab-equipo" hidden>
   <section>
-    <h2 class="label">Goleadores · Palancas FS</h2>
+    <h2 class="label">Equipo · Palancas FS</h2>
     <div class="card tbl-wrap" id="scorers"><div class="empty">Cargando…</div></div>
+    <p class="note">Goles y partidos jugados. ADASUMA no publica tarjetas ni sanciones.</p>
+  </section>
+</div>
+
+<div class="panel" id="tab-rival" hidden>
+  <div id="rival"><div class="empty">Cargando…</div></div>
+</div>
+
+<div class="panel" id="tab-liga" hidden>
+  <section>
+    <h2 class="label">Liga · S1 (1º Sábados)</h2>
+    <input class="search" id="liga-search" type="search" placeholder="Buscar equipo…" aria-label="Buscar equipo">
+    <div class="pills" id="liga-pills"></div>
+    <div class="card" id="liga-matches"><div class="empty">Elige un equipo.</div></div>
   </section>
 </div>
 </main>
@@ -296,7 +330,7 @@
   const fmtShort = new Intl.DateTimeFormat("es-ES", { day: "numeric", month: "short" });
   const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
 
-  let MATCHES = [], STANDINGS = [], SCORERS = [];
+  let MATCHES = [], STANDINGS = [], SCORERS = [], STATS = null;
 
   function result(m) {
     if (m.goles == null) return "";
@@ -329,6 +363,7 @@
     box.appendChild(vs);
     const d = new Date(m.fecha);
     box.appendChild(el("div", "when display", `${cap(fmtLong.format(d))} · ${fmtTime.format(d)}`));
+    if (m.pabellon) box.appendChild(el("div", "where", "📍 " + m.pabellon));
     const cd = el("div", "countdown", countdown(d)); box.appendChild(cd);
     setInterval(() => cd.textContent = countdown(d), 30000);
   }
@@ -343,7 +378,7 @@
     const score = m.goles == null ? "vs" : `${m.goles}-${m.golesc}`;
     t.append(nm(m.equipo1), document.createTextNode(` ${score} `), nm(m.equipo2));
     info.appendChild(t);
-    info.appendChild(el("div", "s", `${fmtTime.format(d)} · Jornada ${m.jornada}`));
+    info.appendChild(el("div", "s", `${fmtTime.format(d)} · Jornada ${m.jornada}${m.pabellon ? " · 📍 " + m.pabellon : ""}`));
     r.append(db, info);
     const res = result(m);
     if (res) r.appendChild(el("div", "badge " + res, res));
@@ -420,6 +455,121 @@
     t.appendChild(tb); box.appendChild(t);
   }
 
+  // ---------- Rival ----------
+  function renderRival() {
+    const box = $("rival"); box.innerHTML = "";
+    const r = STATS && STATS.next_rival;
+    if (!r) { box.appendChild(el("div", "empty", "No hay próximo partido publicado.")); return; }
+
+    const head = el("section");
+    head.appendChild(el("h2", "label", "Próximo rival"));
+    const card = el("div", "next");
+    card.style.textAlign = "left";
+    const rh = el("div", "rival-head");
+    rh.appendChild(el("h3", "display", r.name));
+    card.appendChild(rh);
+    card.appendChild(el("div", "comp", `${r.competition} · Jornada ${r.jornada} · ${r.home ? "en casa" : "fuera"}`));
+    const d = new Date(r.date);
+    card.appendChild(el("div", "comp", cap(fmtLong.format(d)) + " · " + fmtTime.format(d)));
+    if (r.pabellon) card.appendChild(el("div", "where", "📍 " + r.pabellon));
+    if (r.standing) {
+      const kv = el("div", "kv"); const s = r.standing;
+      [[`${s.pos}º`, "Puesto"], [s.pts, "Puntos"], [`${s.pg}-${s.pe}-${s.pp}`, "V-E-D"], [`${s.gf}:${s.gc}`, "Goles"]].forEach(([b, l]) => {
+        const dd = el("div"); dd.append(el("b", "display", b), el("span", null, l)); kv.appendChild(dd);
+      });
+      card.appendChild(kv);
+    }
+    head.appendChild(card); box.appendChild(head);
+
+    const sec2 = el("section"); sec2.appendChild(el("h2", "label", "Últimos resultados del rival"));
+    const lr = el("div", "card");
+    if (r.last_results && r.last_results.length) {
+      const form = el("div", "form pad");
+      r.last_results.slice().reverse().forEach(m => form.appendChild(el("div", "badge " + m.result, m.result)));
+      lr.appendChild(form);
+      r.last_results.forEach(m => lr.appendChild(miniRow(m, r.name)));
+    } else lr.appendChild(el("div", "empty", "Todavía no ha jugado esta temporada."));
+    sec2.appendChild(lr); box.appendChild(sec2);
+
+    const sec3 = el("section"); sec3.appendChild(el("h2", "label", "Sus goleadores"));
+    const ts = el("div", "card tbl-wrap");
+    if (r.top_scorers && r.top_scorers.length) {
+      const t = el("table", "tbl"); const thead = el("thead"), hr = el("tr");
+      ["#", "Jugador", "PJ", "⚽"].forEach(h => hr.appendChild(el("th", h === "Jugador" ? "l" : null, h)));
+      thead.appendChild(hr); t.appendChild(thead);
+      const tb = el("tbody");
+      r.top_scorers.forEach(x => {
+        const tr = el("tr");
+        tr.append(el("td", "dim", x.pos), el("td", "name", x.nombre), el("td", null, x.pj != null ? x.pj : "-"), el("td", "pts", x.goles));
+        tb.appendChild(tr);
+      });
+      t.appendChild(tb); ts.appendChild(t);
+    } else ts.appendChild(el("div", "empty", "Sin goles registrados todavía."));
+    sec3.appendChild(ts); box.appendChild(sec3);
+
+    const sec4 = el("section"); sec4.appendChild(el("h2", "label", "Cara a cara"));
+    const h2 = el("div", "card");
+    if (r.head_to_head && r.head_to_head.length) {
+      const t = { V: 0, E: 0, D: 0 }; r.head_to_head.forEach(m => { if (m.result) t[m.result]++; });
+      h2.appendChild(el("div", "pad comp", `Palancas: ${t.V} victorias, ${t.E} empates, ${t.D} derrotas`));
+      r.head_to_head.forEach(m => h2.appendChild(miniRow(m, US)));
+    } else h2.appendChild(el("div", "empty", "Primer enfrentamiento entre ambos equipos."));
+    sec4.appendChild(h2); box.appendChild(sec4);
+  }
+
+  function miniRow(m, team) {
+    const d = new Date(m.date);
+    const r = el("div", "row");
+    const db = el("div", "date-box");
+    db.append(el("div", "d display", d.getDate()), el("div", "m", fmtShort.format(d).replace(/^\d+\s*/, "").replace(".", "")));
+    const info = el("div", "info"); const t = el("div", "t");
+    const name = n => el("span", n === US ? "us" : null, n);
+    t.append(name(m.home), document.createTextNode(` ${m.score[0]}-${m.score[1]} `), name(m.away));
+    info.appendChild(t);
+    r.append(db, info);
+    if (m.result) r.appendChild(el("div", "badge " + m.result, m.result));
+    return r;
+  }
+
+  // ---------- Liga ----------
+  let LIGA_TEAM = null;
+  function renderLiga() {
+    const L = STATS && STATS.liga;
+    const box = $("liga-matches");
+    if (!L || !L.matches || !L.matches.length) { box.innerHTML = '<div class="empty">Sin datos de liga.</div>'; return; }
+    const teams = [...new Set(L.standings.map(s => s.equipo))].sort((a, b) => a.localeCompare(b, "es"));
+    const term = ($("liga-search").value || "").toLowerCase();
+    const shown = teams.filter(t => t.toLowerCase().includes(term));
+    if (!LIGA_TEAM || !teams.includes(LIGA_TEAM)) LIGA_TEAM = shown[0] || teams[0];
+    const pillsBox = $("liga-pills"); pillsBox.innerHTML = "";
+    shown.forEach(t => {
+      const b = el("button", null, t);
+      b.type = "button"; b.setAttribute("aria-pressed", String(t === LIGA_TEAM));
+      b.addEventListener("click", () => { LIGA_TEAM = t; renderLiga(); });
+      pillsBox.appendChild(b);
+    });
+    box.innerHTML = "";
+    if (!shown.length) { box.appendChild(el("div", "empty", "Ningún equipo coincide.")); return; }
+    const ms = L.matches.filter(m => m.equipo1 === LIGA_TEAM || m.equipo2 === LIGA_TEAM)
+      .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    ms.forEach(m => box.appendChild(ligaRow(m)));
+  }
+
+  function ligaRow(m) {
+    const d = new Date(m.fecha);
+    const r = el("div", "row");
+    const db = el("div", "date-box");
+    db.append(el("div", "d display", d.getDate()), el("div", "m", fmtShort.format(d).replace(/^\d+\s*/, "").replace(".", "")));
+    const info = el("div", "info"); const t = el("div", "t");
+    const nm = n => el("span", n === LIGA_TEAM ? "us" : null, n);
+    const score = m.goles == null ? "vs" : `${m.goles}-${m.golesc}`;
+    t.append(nm(m.equipo1), document.createTextNode(` ${score} `), nm(m.equipo2));
+    info.appendChild(t);
+    info.appendChild(el("div", "s", `J${m.jornada}${m.pabellon ? " · 📍 " + m.pabellon : ""}`));
+    r.append(db, info);
+    return r;
+  }
+
   // ---------- Calendario mensual ----------
   const DOW = ["L", "M", "X", "J", "V", "S", "D"];
   const fmtMonth = new Intl.DateTimeFormat("es-ES", { month: "long", year: "numeric" });
@@ -474,7 +624,7 @@
       const mid = m.goles == null ? el("div", "sep display", "VS") : el("div", "sep display", `${m.goles}-${m.golesc}`);
       vs.append(tn(m.equipo1), mid, tn(m.equipo2));
       c.appendChild(vs);
-      c.appendChild(el("div", "where", `🕒 ${fmtTime.format(new Date(m.fecha))}`));
+      c.appendChild(el("div", "where", `🕒 ${fmtTime.format(new Date(m.fecha))}${m.pabellon ? " · 📍 " + m.pabellon : ""}`));
       const r = result(m);
       if (r) c.appendChild(el("div", "countdown cal-res " + r, r === "V" ? "Victoria" : r === "D" ? "Derrota" : "Empate"));
       box.appendChild(c);
@@ -497,7 +647,7 @@
   });
 
   // ---------- Pestañas ----------
-  const TABS = ["partidos", "calendario", "clasificacion", "goleadores"];
+  const TABS = ["partidos", "calendario", "clasificacion", "equipo", "rival", "liga"];
   function showTab() {
     const tab = TABS.includes(location.hash.slice(1)) ? location.hash.slice(1) : "partidos";
     TABS.forEach(t => { $("tab-" + t).hidden = t !== tab; });
@@ -513,11 +663,15 @@
     fetch("matches.json", { cache: "no-store" }).then(r => r.json()),
     fetch("standings.json", { cache: "no-store" }).then(r => r.json()),
     fetch("scorers.json", { cache: "no-store" }).then(r => r.json()),
-  ]).then(([m, s, g]) => {
-    MATCHES = m; STANDINGS = s; SCORERS = g;
+    fetch("stats.json", { cache: "no-store" }).then(r => r.json()).catch(() => null),
+  ]).then(([m, s, g, st]) => {
+    MATCHES = m; STANDINGS = s; SCORERS = g; STATS = st;
     renderMatches();
     renderStandings();
     renderScorers();
+    renderRival();
+    renderLiga();
+    $("liga-search").addEventListener("input", () => renderLiga());
     const now = new Date();
     const next = m.find(x => x.goles == null && new Date(x.fecha) >= new Date(now - 2 * 36e5));
     const focus = next ? new Date(next.fecha) : (m.length ? new Date(m[m.length - 1].fecha) : now);

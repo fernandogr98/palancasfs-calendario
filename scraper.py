@@ -1,8 +1,11 @@
-"""Genera el calendario (.ics), resultados, clasificación y goleadores de PALANCAS FS.
+"""Genera el calendario (.ics), resultados, clasificación, goleadores y ficha del rival de PALANCAS FS.
 
 Fuente: campeonatosmunicipalesmostoles.org (ADASUMA, Móstoles).
 Sin anti-bot: los endpoints `ser/*Service.php` devuelven JSON al pasar los parámetros
 de jqGrid (`page`, `rows`, `sidx`, `sord`, `_search`, `nd`).
+
+El calendario por equipo (calendarTeamService) NO trae el pabellón; el calendario
+completo de la división (calendarService) sí lo trae en el campo 8. Se cruzan por ID.
 """
 import hashlib
 import json
@@ -15,6 +18,7 @@ import requests
 TEAM_ID = 1865573327850
 TEAM_NAME = "PALANCAS FS"
 DIVISION = "27850,S1,1º+sabados,,1"          # división S1 (1º sábados)
+DIV_NAME = "Fútbol Sala Móstoles · S1 (1º Sábados)"
 BASE = "http://www.campeonatosmunicipalesmostoles.org"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
       "(KHTML, like Gecko) Chrome/120.0 Safari/537.36")
@@ -27,6 +31,7 @@ ICS_FILE = DOCS / "palancas.ics"
 MATCHES_FILE = DOCS / "matches.json"
 STANDINGS_FILE = DOCS / "standings.json"
 SCORERS_FILE = DOCS / "scorers.json"
+STATS_FILE = DOCS / "stats.json"
 
 
 def fetch_json(session: requests.Session, path: str, dato: str, rows: int = 500, sidx: str = "jornada") -> dict:
@@ -59,6 +64,30 @@ def fetch_calendar(session: requests.Session) -> list[dict]:
             "goles": c[4],
             "golesc": c[5],
             "equipo2": c[7],
+        })
+    return out
+
+
+def fetch_division_calendar(session: requests.Session) -> list[dict]:
+    """Todos los partidos de la división, CON pabellón.
+
+    La celda es: [jornada, fecha, equipo1, escudo1, goles, golesc, escudo2, equipo2, PABELLON, grupo].
+    """
+    data = fetch_json(session, "ser/calendarService.php", DIVISION, rows=500)
+    out = []
+    for row in data.get("rows", []):
+        c = row.get("cell", [])
+        if len(c) < 9:
+            continue
+        out.append({
+            "id": row.get("id", ""),
+            "jornada": c[0],
+            "start": parse_fecha(c[1]),
+            "equipo1": c[2],
+            "goles": c[4],
+            "golesc": c[5],
+            "equipo2": c[7],
+            "pabellon": (c[8] or "").strip(),
         })
     return out
 
@@ -103,7 +132,26 @@ def fetch_scorers(session: requests.Session) -> list[dict]:
                 return int(c[i])
             except (ValueError, TypeError):
                 return 0
-        out.append({"pos": n(0), "nombre": c[1], "goles": n(2), "pj": n(3)})
+        out.append({"pos": n(0), "nombre": c[1].strip(), "goles": n(2), "pj": n(3)})
+    return out
+
+
+def fetch_team_scorers(session: requests.Session, team_id) -> list[dict]:
+    """Goleadores de un equipo cualquiera (misma estructura que fetch_scorers)."""
+    try:
+        data = fetch_json(session, "ser/goleadorTeamService.php", str(team_id), rows=100)
+    except Exception:
+        return []
+    out = []
+    for row in data.get("rows", []):
+        c = row.get("cell", [])
+        if len(c) < 3:
+            continue
+        try:
+            out.append({"pos": int(c[0]), "nombre": c[1].strip(), "goles": int(c[2]),
+                        "pj": int(c[3]) if len(c) > 3 and str(c[3]).isdigit() else None})
+        except (ValueError, TypeError):
+            continue
     return out
 
 
@@ -116,8 +164,72 @@ def parse_fecha(text: str) -> datetime | None:
     return datetime(int(y), int(mo), int(d), int(h), int(mi))
 
 
+def _has_score(m: dict) -> bool:
+    """True si el partido ya tiene marcador real (no un 0-0 de partido aún no jugado)."""
+    start = m.get("start")
+    if not start or start > datetime.now():
+        return False
+    g, gc = m.get("goles"), m.get("golesc")
+    return str(g) not in ("", "-", "None") and str(gc) not in ("", "-", "None")
+
+
+def _result_for(team: str, m: dict) -> str | None:
+    """V/E/D del equipo `team` en el partido m (o None si aún no jugado)."""
+    if not _has_score(m):
+        return None
+    g, gc = int(m["goles"]), int(m["golesc"])
+    own, riv = (g, gc) if m["equipo1"] == team else (gc, g)
+    return "V" if own > riv else ("D" if own < riv else "E")
+
+
+def build_next_rival(palancas: list[dict], division: list[dict], standings: list[dict],
+                     session: requests.Session) -> dict | None:
+    """Ficha completa del próximo rival: pabellón, clasificación, forma, goleadores, H2H."""
+    now = datetime.now()
+    future = sorted([m for m in palancas if m["start"] and m["start"] > now], key=lambda m: m["start"])
+    if not future:
+        return None
+    nm = future[0]
+    rival = nm["equipo2"] if nm["equipo1"] == TEAM_NAME else nm["equipo1"]
+    home = nm["equipo1"] == TEAM_NAME
+
+    st = next((s for s in standings if s["equipo"] == rival), None)
+    rival_id = st.get("idequipo") if st else None
+    top_scorers = fetch_team_scorers(session, rival_id) if rival_id else []
+
+    # últimos resultados del rival (5 más recientes jugados)
+    riv_matches = [m for m in division if rival in (m["equipo1"], m["equipo2"]) and _has_score(m)]
+    riv_matches.sort(key=lambda m: m["start"], reverse=True)
+    last_results = [{
+        "date": m["start"].isoformat(), "home": m["equipo1"], "away": m["equipo2"],
+        "score": [int(m["goles"]), int(m["golesc"])], "result": _result_for(rival, m),
+    } for m in riv_matches[:5]]
+
+    # cara a cara Palancas vs rival
+    h2h = []
+    for m in division:
+        if TEAM_NAME in (m["equipo1"], m["equipo2"]) and rival in (m["equipo1"], m["equipo2"]) and TEAM_NAME != rival and _has_score(m):
+            h2h.append({
+                "date": m["start"].isoformat(), "home": m["equipo1"], "away": m["equipo2"],
+                "score": [int(m["goles"]), int(m["golesc"])], "result": _result_for(TEAM_NAME, m),
+            })
+    h2h.sort(key=lambda x: x["date"])
+
+    return {
+        "name": rival, "match_id": nm["id"], "competition": DIV_NAME,
+        "date": nm["start"].isoformat(), "pabellon": nm.get("pabellon", ""),
+        "home": home, "jornada": nm["jornada"], "rival_id": rival_id,
+        "standing": ({"pos": st["pos"], "pts": st["pts"], "pj": st["pj"], "pg": st["pg"],
+                      "pe": st["pe"], "pp": st["pp"], "gf": st["gf"], "gc": st["gc"],
+                      "dg": st["dg"]} if st else None),
+        "top_scorers": top_scorers,
+        "last_results": last_results,
+        "head_to_head": h2h,
+    }
+
+
 def esc(text: str) -> str:
-    return text.replace("\\", "\\\\").replace(";", r"\;").replace(",", r"\,",).replace("\n", r"\n")
+    return text.replace("\\", "\\\\").replace(";", r"\;").replace(",", r"\,").replace("\n", r"\n")
 
 
 def fold(line: str) -> str:
@@ -163,8 +275,7 @@ def build_ics(matches: list[dict]) -> str:
         if not start:
             continue
         goles, golesc = m.get("goles"), m.get("golesc")
-        has_score = _has_score(m)
-        if has_score:
+        if _has_score(m):
             summary = f"⚽ {m['equipo1']} {goles}-{golesc} {m['equipo2']}"
         else:
             summary = f"⚽ {m['equipo1']} vs {m['equipo2']}"
@@ -178,6 +289,10 @@ def build_ics(matches: list[dict]) -> str:
             f"DTSTART;TZID=Europe/Madrid:{start.strftime(fmt)}",
             f"DTEND;TZID=Europe/Madrid:{(start + DURATION).strftime(fmt)}",
             f"SUMMARY:{esc(summary)}",
+        ]
+        if m.get("pabellon"):
+            lines.append(f"LOCATION:{esc(m['pabellon'])}")
+        lines += [
             f"DESCRIPTION:{esc(desc)}",
             "BEGIN:VALARM", "ACTION:DISPLAY", f"DESCRIPTION:{esc(summary)}",
             f"TRIGGER:{ALARM_BEFORE}", "END:VALARM",
@@ -187,33 +302,22 @@ def build_ics(matches: list[dict]) -> str:
     return "\r\n".join(fold(l) for l in lines) + "\r\n"
 
 
-def _has_score(m: dict) -> bool:
-    """True si el partido ya tiene marcador real (no un 0-0 de partido aún no jugado)."""
-    start = m.get("start")
-    if not start:
-        return False
-    # Un partido futuro con 0-0 = aún no jugado. Pasado con 0-0 = empate real.
-    if start > datetime.now():
-        return False
-    g, gc = m.get("goles"), m.get("golesc")
-    return g not in (None, "", "-") and gc not in (None, "", "-")
-
-
 def build_matches_json(matches: list[dict]) -> list[dict]:
-    """Normaliza partidos para la web (distinguimos jugados/próximos)."""
+    """Normaliza partidos para la web (jugados/próximos) + pabellón."""
     out = []
     for m in matches:
         start = m.get("start")
         if not start:
             continue
-        jugado = start <= datetime.now()
+        jugado = _has_score(m)
         g, gc = m.get("goles"), m.get("golesc")
         out.append({
             "id": m["id"], "jornada": m["jornada"],
             "fecha": start.isoformat(),
             "equipo1": m["equipo1"], "equipo2": m["equipo2"],
-            "goles": int(g) if jugado and g not in (None, "", "-") else None,
-            "golesc": int(gc) if jugado and gc not in (None, "", "-") else None,
+            "goles": int(g) if jugado else None,
+            "golesc": int(gc) if jugado else None,
+            "pabellon": m.get("pabellon", ""),
         })
     return out
 
@@ -232,20 +336,44 @@ def main():
         print("AVISO: 0 partidos. Se mantiene la web anterior.")
         return
 
+    division = fetch_division_calendar(session)
+    pab_by_id = {m["id"]: m["pabellon"] for m in division}
+    for m in matches:
+        m["pabellon"] = pab_by_id.get(m["id"], "")
+
     standings = fetch_standings(session)
     scorers = fetch_scorers(session)
+    next_rival = build_next_rival(matches, division, standings, session)
+
+    liga_matches = [{
+        "id": m["id"], "jornada": m["jornada"], "fecha": m["start"].isoformat(),
+        "equipo1": m["equipo1"], "equipo2": m["equipo2"],
+        "goles": int(m["goles"]) if _has_score(m) else None,
+        "golesc": int(m["golesc"]) if _has_score(m) else None,
+        "pabellon": m["pabellon"],
+    } for m in division if m["start"]]
+
+    stats = {
+        "updated": datetime.now().astimezone().isoformat(timespec="seconds"),
+        "next_rival": next_rival,
+        "players": [{"pos": s["pos"], "nombre": s["nombre"], "goles": s["goles"], "pj": s["pj"]} for s in scorers],
+        "liga": {"division": DIV_NAME, "standings": standings, "matches": liga_matches},
+    }
 
     DOCS.mkdir(exist_ok=True)
     ICS_FILE.write_bytes(build_ics(matches).encode("utf-8"))
     MATCHES_FILE.write_text(json.dumps(build_matches_json(matches), ensure_ascii=False, indent=1), encoding="utf-8")
     STANDINGS_FILE.write_text(json.dumps(standings, ensure_ascii=False, indent=1), encoding="utf-8")
     SCORERS_FILE.write_text(json.dumps(scorers, ensure_ascii=False, indent=1), encoding="utf-8")
+    STATS_FILE.write_text(json.dumps(stats, ensure_ascii=False, indent=1), encoding="utf-8")
 
     for m in sorted(matches, key=lambda x: x["start"]):
         print(m["start"].strftime("%a %d/%m %H:%M"), "| J" + m["jornada"], "|",
-              m["equipo1"], m.get("goles") or "-", "-", m.get("golesc") or "-", m["equipo2"])
+              m["equipo1"], m.get("goles") or "-", "-", m.get("golesc") or "-", m["equipo2"],
+              "|", m.get("pabellon") or "")
     print(f"{len(matches)} partidos -> {ICS_FILE.name}")
-    print(f"Clasificación: {len(standings)} equipos · Goleadores: {len(scorers)}")
+    print(f"Clasificación: {len(standings)} equipos · Goleadores: {len(scorers)} · "
+          f"Liga: {len(liga_matches)} partidos · Próximo rival: {(next_rival or {}).get('name', '-')}")
 
 
 if __name__ == "__main__":
