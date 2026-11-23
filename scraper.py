@@ -10,6 +10,7 @@ completo de la división (calendarService) sí lo trae en el campo 8. Se cruzan 
 import hashlib
 import json
 import re
+from concurrent.futures import ThreadPoolExecutor
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -155,6 +156,48 @@ def fetch_team_scorers(session: requests.Session, team_id) -> list[dict]:
     return out
 
 
+def fetch_all_team_scorers(standings: list[dict], previous: list | None = None) -> list[dict]:
+    """Goleadores de TODOS los equipos de la división, en paralelo (4 hilos).
+
+    El navegador no puede llamarlas en vivo (la web es HTTPS y ADASUMA HTTP), así que
+    se precalculan aquí. Si la petición de un equipo falla o vuelve vacía, se conserva
+    la lista anterior de `stats.json` en vez de dejar al equipo sin goleadores.
+    """
+    prev = {}
+    for t in (previous or []):
+        if isinstance(t, dict) and t.get("idequipo"):
+            prev[str(t["idequipo"])] = t.get("scorers") or []
+
+    def one(st: dict):
+        tid = str(st.get("idequipo") or "")
+        if not tid:
+            return st.get("equipo", ""), tid, []
+        ses = requests.Session()
+        ses.headers["User-Agent"] = UA
+        try:
+            rows = fetch_team_scorers(ses, tid)
+        except Exception:
+            rows = []
+        finally:
+            ses.close()
+        return st.get("equipo", ""), tid, rows
+
+    targets = [st for st in standings if st.get("idequipo")]
+    with ThreadPoolExecutor(max_workers=4) as ex:
+        results = list(ex.map(one, targets))
+
+    by_id = {st["idequipo"]: st for st in targets}
+    out = []
+    for equipo, tid, rows in results:
+        if not rows:
+            rows = prev.get(str(tid), [])
+        st = by_id.get(tid, {})
+        out.append({"idequipo": tid, "equipo": equipo or st.get("equipo", ""),
+                    "pos": st.get("pos"), "scorers": rows})
+    out.sort(key=lambda t: t.get("pos") or 99)
+    return out
+
+
 def parse_fecha(text: str) -> datetime | None:
     """'26-09-2026 21:00' -> datetime (hora local de Madrid)."""
     m = re.match(r"(\d{1,2})-(\d{1,2})-(\d{4})\s+(\d{1,2}):(\d{2})", (text or "").strip())
@@ -183,7 +226,7 @@ def _result_for(team: str, m: dict) -> str | None:
 
 
 def build_next_rival(palancas: list[dict], division: list[dict], standings: list[dict],
-                     session: requests.Session) -> dict | None:
+                     session: requests.Session, scorers_map: dict | None = None) -> dict | None:
     """Ficha completa del próximo rival: pabellón, clasificación, forma, goleadores, H2H."""
     now = datetime.now()
     future = sorted([m for m in palancas if m["start"] and m["start"] > now], key=lambda m: m["start"])
@@ -195,7 +238,11 @@ def build_next_rival(palancas: list[dict], division: list[dict], standings: list
 
     st = next((s for s in standings if s["equipo"] == rival), None)
     rival_id = st.get("idequipo") if st else None
-    top_scorers = fetch_team_scorers(session, rival_id) if rival_id else []
+    top_scorers = []
+    if scorers_map is not None and rival_id:
+        top_scorers = (scorers_map.get(str(rival_id)) or {}).get("scorers") or []
+    if not top_scorers and rival_id:
+        top_scorers = fetch_team_scorers(session, rival_id)
 
     # últimos resultados del rival (5 más recientes jugados)
     riv_matches = [m for m in division if rival in (m["equipo1"], m["equipo2"]) and _has_score(m)]
@@ -343,7 +390,16 @@ def main():
 
     standings = fetch_standings(session)
     scorers = fetch_scorers(session)
-    next_rival = build_next_rival(matches, division, standings, session)
+
+    previous_teams = None
+    try:
+        previous_teams = json.loads(STATS_FILE.read_text(encoding="utf-8")).get("teams")
+    except Exception:
+        previous_teams = None
+
+    teams = fetch_all_team_scorers(standings, previous_teams)
+    scorers_map = {t["idequipo"]: t for t in teams}
+    next_rival = build_next_rival(matches, division, standings, session, scorers_map=scorers_map)
 
     liga_matches = [{
         "id": m["id"], "jornada": m["jornada"], "fecha": m["start"].isoformat(),
@@ -358,6 +414,7 @@ def main():
         "next_rival": next_rival,
         "players": [{"pos": s["pos"], "nombre": s["nombre"], "goles": s["goles"], "pj": s["pj"]} for s in scorers],
         "liga": {"division": DIV_NAME, "standings": standings, "matches": liga_matches},
+        "teams": teams,
     }
 
     DOCS.mkdir(exist_ok=True)
@@ -374,6 +431,7 @@ def main():
     print(f"{len(matches)} partidos -> {ICS_FILE.name}")
     print(f"Clasificación: {len(standings)} equipos · Goleadores: {len(scorers)} · "
           f"Liga: {len(liga_matches)} partidos · Próximo rival: {(next_rival or {}).get('name', '-')}")
+    print(f"Goleadores por equipo: {sum(1 for t in teams if t['scorers'])}/{len(teams)} con datos")
 
 
 if __name__ == "__main__":

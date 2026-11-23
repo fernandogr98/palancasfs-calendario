@@ -191,6 +191,9 @@
   .pills button[aria-pressed="true"] { background: var(--brand); color: #fff; border-color: var(--brand); }
   .search { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--line); background: var(--panel); color: var(--text); font: 500 15px Inter, sans-serif; margin-bottom: 12px; }
   .search::placeholder { color: var(--muted); }
+  select.search { appearance: none; -webkit-appearance: none; cursor: pointer; padding-right: 34px;
+    background-image: linear-gradient(45deg, transparent 50%, var(--brand) 50%), linear-gradient(135deg, var(--brand) 50%, transparent 50%);
+    background-position: calc(100% - 19px) 50%, calc(100% - 13px) 50%; background-size: 6px 6px, 6px 6px; background-repeat: no-repeat; }
   .tag { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; color: var(--brand); background: var(--brand-soft); border-radius: 6px; padding: 2px 7px; }
   /* Pestaña Liga (acordeón por equipo) */
   .team-card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; margin-bottom: 8px; }
@@ -331,7 +334,11 @@
 </div>
 
 <div class="panel" id="tab-rival" hidden>
-  <div id="rival"><div class="empty">Cargando…</div></div>
+  <section>
+    <h2 class="label">Ficha de equipo</h2>
+    <select class="search" id="rival-select" aria-label="Elegir equipo"></select>
+    <div id="rival"><div class="empty">Cargando…</div></div>
+  </section>
 </div>
 
 <div class="panel" id="tab-liga" hidden>
@@ -499,66 +506,163 @@
     t.appendChild(tb); box.appendChild(t);
   }
 
-  // ---------- Rival ----------
-  function renderRival() {
-    const box = $("rival"); box.innerHTML = "";
-    const r = STATS && STATS.next_rival;
-    if (!r) { box.appendChild(el("div", "empty", "No hay próximo partido publicado.")); return; }
+  // ---------- Rival / ficha de cualquier equipo ----------
+  let RIVAL_TEAM = null;
 
+  function rivalStandings() {
+    const L = STATS && STATS.liga;
+    return (L && L.standings ? L.standings : []).slice().sort((a, b) => (a.pos || 99) - (b.pos || 99));
+  }
+
+  function renderRivalPicker() {
+    const sel = $("rival-select");
+    if (!sel) return;
+    const teams = rivalStandings();
+    if (!teams.length) return;
+    const nr = (STATS.next_rival || {}).name;
+    if (!RIVAL_TEAM) RIVAL_TEAM = nr || teams[0].equipo;
+    if (!teams.some(t => t.equipo === RIVAL_TEAM)) RIVAL_TEAM = teams[0].equipo;
+    sel.innerHTML = "";
+    teams.forEach(t => {
+      const o = document.createElement("option");
+      o.value = t.equipo;
+      o.textContent = (t.equipo === nr ? "★ " : "") + `${t.pos}º · ${t.equipo}`;
+      sel.appendChild(o);
+    });
+    sel.value = RIVAL_TEAM;
+  }
+
+  function fightStats(name, ms) {
+    const st = { V: 0, E: 0, D: 0, gf: 0, gc: 0, pj: 0 };
+    ms.filter(m => m.goles != null).forEach(m => {
+      const h = m.equipo1 === name;
+      const gf = h ? m.goles : m.golesc, gc = h ? m.golesc : m.goles;
+      st.gf += gf; st.gc += gc; st.pj++;
+      st[gf > gc ? "V" : gf < gc ? "D" : "E"]++;
+    });
+    return st;
+  }
+
+  function renderRival() {
+    const box = $("rival"); if (!box) return;
+    box.innerHTML = "";
+    const L = STATS && STATS.liga;
+    const name = RIVAL_TEAM || (STATS && STATS.next_rival ? STATS.next_rival.name : null);
+    if (!L || !name) { box.appendChild(el("div", "empty", "Sin datos de equipos todavía.")); return; }
+
+    const ms = L.matches.filter(m => m.equipo1 === name || m.equipo2 === name);
+    const played = ms.filter(m => m.goles != null).sort((a, b) => new Date(b.fecha) - new Date(a.fecha));
+    const pend = ms.filter(m => m.goles == null).sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    const st = L.standings.find(s => s.equipo === name) || {};
+
+    // cabecera
     const head = el("section");
-    head.appendChild(el("h2", "label", "Próximo rival"));
-    const card = el("div", "next");
-    card.style.textAlign = "left";
+    head.appendChild(el("h2", "label", name === US ? "Nuestro equipo" : "Datos del equipo"));
+    const card = el("div", "next"); card.style.textAlign = "left";
     const rh = el("div", "rival-head");
-    rh.appendChild(el("h3", "display", r.name));
+    rh.appendChild(el("h3", "display", name));
     card.appendChild(rh);
-    card.appendChild(el("div", "comp", `${r.competition} · Jornada ${r.jornada} · ${r.home ? "en casa" : "fuera"}`));
-    const d = new Date(r.date);
-    card.appendChild(el("div", "comp", cap(fmtLong.format(d)) + " · " + fmtTime.format(d)));
-    if (r.pabellon) card.appendChild(el("div", "where", "📍 " + r.pabellon));
-    if (r.standing) {
-      const kv = el("div", "kv"); const s = r.standing;
-      [[`${s.pos}º`, "Puesto"], [s.pts, "Puntos"], [`${s.pg}-${s.pe}-${s.pp}`, "V-E-D"], [`${s.gf}:${s.gc}`, "Goles"]].forEach(([b, l]) => {
-        const dd = el("div"); dd.append(el("b", "display", b), el("span", null, l)); kv.appendChild(dd);
-      });
-      card.appendChild(kv);
+    card.appendChild(el("div", "comp", L.division + (st.pos ? ` · ${st.pos}º clasificado` : "")));
+    const kv = el("div", "kv");
+    [[st.pos != null ? st.pos + "º" : "·", "Puesto"], [st.pts != null ? st.pts : "·", "Puntos"],
+     [st.pj != null ? st.pj : played.length, "Jugados"], [`${st.pg}-${st.pe}-${st.pp}`, "V-E-D"],
+     [`${st.gf}:${st.gc}`, "Goles"], [(st.dg > 0 ? "+" : "") + (st.dg != null ? st.dg : 0), "Dif."]]
+      .forEach(([b, l]) => { const d = el("div"); d.append(el("b", "display", b), el("span", null, l)); kv.appendChild(d); });
+    card.appendChild(kv);
+    const nextMs = pend[0];
+    if (nextMs) {
+      const dn = new Date(nextMs.fecha);
+      const vsUs = nextMs.equipo1 === US || nextMs.equipo2 === US;
+      card.appendChild(el("div", "comp", `${vsUs ? "Próximo contra Palancas" : "Próximo partido"}: ${cap(fmtLong.format(dn))} · ${fmtTime.format(dn)} · J${nextMs.jornada} · ${nextMs.equipo1 === name ? "en casa" : "fuera"}`));
+      if (nextMs.pabellon) card.appendChild(el("div", "where", "📍 " + nextMs.pabellon));
     }
     head.appendChild(card); box.appendChild(head);
 
-    const sec2 = el("section"); sec2.appendChild(el("h2", "label", "Últimos resultados del rival"));
-    const lr = el("div", "card");
-    if (r.last_results && r.last_results.length) {
-      const form = el("div", "form pad");
-      r.last_results.slice().reverse().forEach(m => form.appendChild(el("div", "badge " + m.result, m.result)));
-      lr.appendChild(form);
-      r.last_results.forEach(m => lr.appendChild(miniRow(m, r.name)));
-    } else lr.appendChild(el("div", "empty", "Todavía no ha jugado esta temporada."));
-    sec2.appendChild(lr); box.appendChild(sec2);
+    // forma y racha
+    const forms = played.slice(0, 5).map(m => resOf(name, m));
+    const sec1 = el("section");
+    sec1.appendChild(el("h2", "label", "Forma y racha"));
+    const fc = el("div", "card pad");
+    if (forms.length) {
+      const f = el("div", "form");
+      forms.slice().reverse().forEach(r => f.appendChild(el("div", "badge " + r, r)));
+      fc.appendChild(f);
+      let racha = 1;
+      while (racha < forms.length && forms[racha] === forms[0]) racha++;
+      const lbl = forms[0] === "V" ? "victoria" : forms[0] === "D" ? "derrota" : "empate";
+      fc.appendChild(el("div", "note", `Racha actual: ${racha} ${lbl}${racha > 1 ? "s" : ""} · últimos 5: ${forms.join(" · ")}`));
+    } else fc.appendChild(el("div", "empty", "Todavía no ha jugado esta temporada."));
+    sec1.appendChild(fc); box.appendChild(sec1);
 
-    const sec3 = el("section"); sec3.appendChild(el("h2", "label", "Sus goleadores"));
-    const ts = el("div", "card tbl-wrap");
-    if (r.top_scorers && r.top_scorers.length) {
-      const t = el("table", "tbl"); const thead = el("thead"), hr = el("tr");
-      ["#", "Jugador", "PJ", "⚽"].forEach(h => hr.appendChild(el("th", h === "Jugador" ? "l" : null, h)));
-      thead.appendChild(hr); t.appendChild(thead);
-      const tb = el("tbody");
-      r.top_scorers.forEach(x => {
-        const tr = el("tr");
-        tr.append(el("td", "dim", x.pos), el("td", "name", x.nombre), el("td", null, x.pj != null ? x.pj : "-"), el("td", "pts", x.goles));
-        tb.appendChild(tr);
+    // casa / fuera
+    const sec2 = el("section");
+    sec2.appendChild(el("h2", "label", "Casa y fuera"));
+    const hc = el("div", "card pad");
+    hc.appendChild(ligaTable([
+      { label: "", cls: "l", get: r => r[0] },
+      { label: "PJ", get: r => r[1].pj },
+      { label: "V-E-D", get: r => `${r[1].V}-${r[1].E}-${r[1].D}` },
+      { label: "Goles", get: r => `${r[1].gf}:${r[1].gc}` },
+      { label: "Media", get: r => r[1].pj ? (r[1].gf / r[1].pj).toFixed(1) : "·" },
+    ], [["Como local", fightStats(name, ms.filter(m => m.equipo1 === name))],
+        ["Como visitante", fightStats(name, ms.filter(m => m.equipo2 === name))],
+        ["Total", fightStats(name, ms)]]));
+    sec2.appendChild(hc); box.appendChild(sec2);
+
+    // goleadores
+    const sc = ((STATS.teams || []).find(t => t.equipo === name) || {}).scorers || [];
+    const sec3 = el("section");
+    sec3.appendChild(el("h2", "label", "Goleadores"));
+    const sc3 = el("div", "card tbl-wrap");
+    if (sc.length) {
+      sc3.appendChild(ligaTable([
+        { label: "#", get: x => el("span", "dim", String(x.pos)) },
+        { label: "Jugador", cls: "l", get: x => x.nombre },
+        { label: "PJ", get: x => x.pj != null ? x.pj : "-" },
+        { label: "⚽", get: x => el("b", null, String(x.goles)) },
+      ], sc));
+    } else sc3.appendChild(el("div", "empty", "Sin goles registrados todavía."));
+    sec3.appendChild(sc3); box.appendChild(sec3);
+
+    // cara a cara con Palancas
+    const sec4 = el("section");
+    sec4.appendChild(el("h2", "label", "Cara a cara con Palancas"));
+    const h4 = el("div", "card");
+    const h2h = ms.filter(m => m.goles != null && name !== US && (m.equipo1 === US || m.equipo2 === US))
+      .sort((a, b) => new Date(a.fecha) - new Date(b.fecha));
+    if (name === US) h4.appendChild(el("div", "empty", "Este es nuestro equipo."));
+    else if (h2h.length) {
+      const t = { V: 0, E: 0, D: 0 };
+      h2h.forEach(m => { t[resOf(US, m)]++; });
+      h4.appendChild(el("div", "pad comp", `Palancas: ${t.V} victorias · ${t.E} empates · ${t.D} derrotas`));
+      h2h.slice().reverse().forEach(m => h4.appendChild(miniRow({ date: m.fecha, home: m.equipo1, away: m.equipo2, score: [m.goles, m.golesc], result: resOf(US, m) }, US)));
+    } else h4.appendChild(el("div", "empty", "Primer enfrentamiento entre ambos equipos."));
+    sec4.appendChild(h4); box.appendChild(sec4);
+
+    // todos sus partidos
+    const sec5 = el("section");
+    sec5.appendChild(el("h2", "label", "Todos sus partidos"));
+    const p5 = el("div", "card");
+    if (played.length) {
+      played.slice().reverse().forEach(m => p5.appendChild(miniRow({ date: m.fecha, home: m.equipo1, away: m.equipo2, score: [m.goles, m.golesc], result: resOf(name, m) }, name)));
+    } else p5.appendChild(el("div", "empty", "Sin partidos jugados."));
+    if (pend.length) {
+      p5.appendChild(el("div", "pad comp", "Pendientes"));
+      pend.forEach(m => {
+        const d = new Date(m.fecha);
+        const row = el("div", "row");
+        const db = el("div", "date-box");
+        db.append(el("div", "d display", d.getDate()), el("div", "m", fmtShort.format(d).replace(/^\d+\s*/, "").replace(".", "")));
+        const info = el("div", "info"); const tt = el("div", "t");
+        const nm = n => el("span", n === US ? "us" : null, n);
+        tt.append(nm(m.equipo1), document.createTextNode(" vs "), nm(m.equipo2));
+        info.appendChild(tt);
+        info.appendChild(el("div", "s", `J${m.jornada}${m.pabellon ? " · 📍 " + m.pabellon : ""}`));
+        row.append(db, info);
+        p5.appendChild(row);
       });
-      t.appendChild(tb); ts.appendChild(t);
-    } else ts.appendChild(el("div", "empty", "Sin goles registrados todavía."));
-    sec3.appendChild(ts); box.appendChild(sec3);
-
-    const sec4 = el("section"); sec4.appendChild(el("h2", "label", "Cara a cara"));
-    const h2 = el("div", "card");
-    if (r.head_to_head && r.head_to_head.length) {
-      const t = { V: 0, E: 0, D: 0 }; r.head_to_head.forEach(m => { if (m.result) t[m.result]++; });
-      h2.appendChild(el("div", "pad comp", `Palancas: ${t.V} victorias, ${t.E} empates, ${t.D} derrotas`));
-      r.head_to_head.forEach(m => h2.appendChild(miniRow(m, US)));
-    } else h2.appendChild(el("div", "empty", "Primer enfrentamiento entre ambos equipos."));
-    sec4.appendChild(h2); box.appendChild(sec4);
+    }
+    sec5.appendChild(p5); box.appendChild(sec5);
   }
 
   function miniRow(m, team) {
@@ -798,7 +902,9 @@
     renderMatches();
     renderStandings();
     renderScorers();
+    renderRivalPicker();
     renderRival();
+    $("rival-select").addEventListener("change", e => { RIVAL_TEAM = e.target.value; renderRival(); });
     renderLiga();
     $("liga-search").addEventListener("input", () => renderLiga());
     const now = new Date();
