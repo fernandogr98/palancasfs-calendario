@@ -1,15 +1,15 @@
 [
  {
   "pos": 1,
-  "nombre": "Miguel, García",
-  "goles": 9,
-  "pj": 7
- },
- {
-  "pos": 2,
   "nombre": "Rafael, Manzano",
   "goles": 9,
   "pj": 6
+ },
+ {
+  "pos": 2,
+  "nombre": "Miguel, García",
+  "goles": 9,
+  "pj": 7
  },
  {
   "pos": 3,

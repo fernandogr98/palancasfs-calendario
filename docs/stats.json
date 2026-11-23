@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-23T17:00:59+01:00",
+ "updated": "2026-11-23T17:15:51+01:00",
  "next_rival": {
   "name": "EL RIO FC",
   "match_id": "245251",
@@ -157,15 +157,15 @@
  "players": [
   {
    "pos": 1,
-   "nombre": "Miguel, García",
-   "goles": 9,
-   "pj": 7
-  },
-  {
-   "pos": 2,
    "nombre": "Rafael, Manzano",
    "goles": 9,
    "pj": 6
+  },
+  {
+   "pos": 2,
+   "nombre": "Miguel, García",
+   "goles": 9,
+   "pj": 7
   },
   {
    "pos": 3,
@@ -1761,33 +1761,33 @@
     },
     {
      "pos": 8,
-     "nombre": "Daniel, Lufuanifuani",
-     "goles": 1,
-     "pj": 1
-    },
-    {
-     "pos": 9,
      "nombre": "Sergio, Rivera",
      "goles": 1,
      "pj": 1
     },
     {
-     "pos": 10,
-     "nombre": "Víctor , Alcaraz",
-     "goles": 0,
-     "pj": 7
+     "pos": 9,
+     "nombre": "Daniel, Lufuanifuani",
+     "goles": 1,
+     "pj": 1
     },
     {
-     "pos": 11,
+     "pos": 10,
      "nombre": "Rubén , Bajo",
      "goles": 0,
      "pj": 5
     },
     {
-     "pos": 12,
+     "pos": 11,
      "nombre": "Manuel, Ramón",
      "goles": 0,
      "pj": 1
+    },
+    {
+     "pos": 12,
+     "nombre": "Víctor , Alcaraz",
+     "goles": 0,
+     "pj": 7
     }
    ]
   },
@@ -1822,27 +1822,27 @@
     },
     {
      "pos": 5,
-     "nombre": "David, Martínez",
-     "goles": 3,
-     "pj": 4
-    },
-    {
-     "pos": 6,
      "nombre": "Daouda, Berete",
      "goles": 3,
      "pj": 4
     },
     {
-     "pos": 7,
-     "nombre": "Mohamed, Aharram",
-     "goles": 2,
-     "pj": 7
+     "pos": 6,
+     "nombre": "David, Martínez",
+     "goles": 3,
+     "pj": 4
     },
     {
-     "pos": 8,
+     "pos": 7,
      "nombre": "Ismael, Ettahri",
      "goles": 2,
      "pj": 3
+    },
+    {
+     "pos": 8,
+     "nombre": "Mohamed, Aharram",
+     "goles": 2,
+     "pj": 7
     },
     {
      "pos": 9,
@@ -1901,57 +1901,57 @@
     },
     {
      "pos": 4,
-     "nombre": "Aaron, Rodríguez",
-     "goles": 3,
-     "pj": 1
-    },
-    {
-     "pos": 5,
      "nombre": "Aissam, Ouled",
      "goles": 3,
      "pj": 3
     },
     {
-     "pos": 6,
+     "pos": 5,
      "nombre": "Raúl, Gómez",
      "goles": 3,
      "pj": 4
     },
     {
-     "pos": 7,
+     "pos": 6,
      "nombre": "Alejandro, Torets",
      "goles": 3,
      "pj": 5
     },
     {
-     "pos": 8,
-     "nombre": "Mohammed, Beddoura",
-     "goles": 2,
-     "pj": 3
+     "pos": 7,
+     "nombre": "Aaron, Rodríguez",
+     "goles": 3,
+     "pj": 1
     },
     {
-     "pos": 9,
+     "pos": 8,
      "nombre": "Florinel, Daniel",
      "goles": 2,
      "pj": 7
     },
     {
-     "pos": 10,
-     "nombre": "Moises, Palomeque",
-     "goles": 1,
-     "pj": 2
+     "pos": 9,
+     "nombre": "Mohammed, Beddoura",
+     "goles": 2,
+     "pj": 3
     },
     {
-     "pos": 11,
+     "pos": 10,
      "nombre": "Sergio, Rodríguez",
      "goles": 1,
      "pj": 4
     },
     {
-     "pos": 12,
+     "pos": 11,
      "nombre": "Miguel Angel , Cano",
      "goles": 1,
      "pj": 3
+    },
+    {
+     "pos": 12,
+     "nombre": "Moises, Palomeque",
+     "goles": 1,
+     "pj": 2
     },
     {
      "pos": 13,
@@ -1986,49 +1986,49 @@
     },
     {
      "pos": 3,
-     "nombre": "Sergio, Calabia",
-     "goles": 3,
-     "pj": 6
-    },
-    {
-     "pos": 4,
      "nombre": "Ibrahim, Amanssour",
      "goles": 3,
      "pj": 2
     },
     {
-     "pos": 5,
-     "nombre": "Nouaman, El Falaki",
-     "goles": 2,
-     "pj": 5
+     "pos": 4,
+     "nombre": "Sergio, Calabia",
+     "goles": 3,
+     "pj": 6
     },
     {
-     "pos": 6,
+     "pos": 5,
      "nombre": "Ahmed, El Boujdaini",
      "goles": 2,
      "pj": 7
     },
     {
-     "pos": 7,
+     "pos": 6,
      "nombre": "Mohammed, Amanssour",
      "goles": 2,
      "pj": 2
     },
     {
-     "pos": 8,
+     "pos": 7,
      "nombre": "Oussama, Amanssour",
      "goles": 2,
      "pj": 6
     },
     {
+     "pos": 8,
+     "nombre": "Nouaman, El Falaki",
+     "goles": 2,
+     "pj": 5
+    },
+    {
      "pos": 9,
-     "nombre": "Mohamed Ali, Ali",
+     "nombre": "Hamza, Khachcha",
      "goles": 0,
      "pj": 7
     },
     {
      "pos": 10,
-     "nombre": "Hamza, Khachcha",
+     "nombre": "Mohamed Ali, Ali",
      "goles": 0,
      "pj": 7
     }
@@ -2259,21 +2259,21 @@
     },
     {
      "pos": 6,
-     "nombre": "Mohamed, Achnit",
-     "goles": 1,
-     "pj": 6
-    },
-    {
-     "pos": 7,
      "nombre": "Anas, Zaidi",
      "goles": 1,
      "pj": 1
     },
     {
-     "pos": 8,
+     "pos": 7,
      "nombre": "Ayman, Achnit",
      "goles": 1,
      "pj": 5
+    },
+    {
+     "pos": 8,
+     "nombre": "Mohamed, Achnit",
+     "goles": 1,
+     "pj": 6
     },
     {
      "pos": 9,
@@ -2362,15 +2362,15 @@
     },
     {
      "pos": 8,
-     "nombre": "Oualid, Grine",
-     "goles": 1,
-     "pj": 5
-    },
-    {
-     "pos": 9,
      "nombre": "Nizar , Lemaizi",
      "goles": 1,
      "pj": 3
+    },
+    {
+     "pos": 9,
+     "nombre": "Oualid, Grine",
+     "goles": 1,
+     "pj": 5
     },
     {
      "pos": 10,
@@ -2429,45 +2429,45 @@
     },
     {
      "pos": 7,
-     "nombre": "Alvaro, Lobo",
-     "goles": 1,
-     "pj": 6
-    },
-    {
-     "pos": 8,
      "nombre": "Cristian , Gutiérrez",
      "goles": 1,
      "pj": 4
     },
     {
-     "pos": 9,
+     "pos": 8,
      "nombre": "David, Carretero",
      "goles": 1,
      "pj": 7
     },
     {
+     "pos": 9,
+     "nombre": "Alvaro, Lobo",
+     "goles": 1,
+     "pj": 6
+    },
+    {
      "pos": 10,
+     "nombre": "Rodrigo, Vargas",
+     "goles": 0,
+     "pj": 6
+    },
+    {
+     "pos": 11,
      "nombre": "Miguel, Medina",
      "goles": 0,
      "pj": 4
     },
     {
-     "pos": 11,
+     "pos": 12,
      "nombre": "Carlos , Castro",
      "goles": 0,
      "pj": 1
     },
     {
-     "pos": 12,
+     "pos": 13,
      "nombre": "Martin , Alami",
      "goles": 0,
      "pj": 5
-    },
-    {
-     "pos": 13,
-     "nombre": "Rodrigo, Vargas",
-     "goles": 0,
-     "pj": 6
     }
    ]
   },
@@ -2587,87 +2587,87 @@
     },
     {
      "pos": 3,
-     "nombre": "Juan Pedro, Durán",
-     "goles": 1,
-     "pj": 5
-    },
-    {
-     "pos": 4,
-     "nombre": "Carlos, Muñoz",
-     "goles": 1,
-     "pj": 3
-    },
-    {
-     "pos": 5,
      "nombre": "Pablo, Ruiz",
      "goles": 1,
      "pj": 2
     },
     {
-     "pos": 6,
+     "pos": 4,
      "nombre": "David, Candelas",
      "goles": 1,
      "pj": 7
     },
     {
-     "pos": 7,
+     "pos": 5,
      "nombre": "Andrés, Cortés",
      "goles": 1,
      "pj": 3
     },
     {
-     "pos": 8,
-     "nombre": "Ramon, Latorre",
-     "goles": 0,
-     "pj": 2
-    },
-    {
-     "pos": 9,
-     "nombre": "Iván, Del Amo",
-     "goles": 0,
-     "pj": 6
-    },
-    {
-     "pos": 10,
-     "nombre": "Diego, Múñoz-torrero",
-     "goles": 0,
-     "pj": 6
-    },
-    {
-     "pos": 11,
-     "nombre": "Ivan, Agudo",
-     "goles": 0,
+     "pos": 6,
+     "nombre": "Juan Pedro, Durán",
+     "goles": 1,
      "pj": 5
     },
     {
-     "pos": 12,
-     "nombre": "Víctor, Díaz",
-     "goles": 0,
-     "pj": 2
+     "pos": 7,
+     "nombre": "Carlos, Muñoz",
+     "goles": 1,
+     "pj": 3
     },
     {
-     "pos": 13,
-     "nombre": "Jose Luis, Sánchez",
-     "goles": 0,
-     "pj": 6
-    },
-    {
-     "pos": 14,
+     "pos": 8,
      "nombre": "Ángel, García",
      "goles": 0,
      "pj": 3
     },
     {
-     "pos": 15,
+     "pos": 9,
      "nombre": "Daniel, Román",
      "goles": 0,
      "pj": 7
     },
     {
-     "pos": 16,
+     "pos": 10,
      "nombre": "Pedro, Santiago",
      "goles": 0,
      "pj": 4
+    },
+    {
+     "pos": 11,
+     "nombre": "Ramon, Latorre",
+     "goles": 0,
+     "pj": 2
+    },
+    {
+     "pos": 12,
+     "nombre": "Iván, Del Amo",
+     "goles": 0,
+     "pj": 6
+    },
+    {
+     "pos": 13,
+     "nombre": "Diego, Múñoz-torrero",
+     "goles": 0,
+     "pj": 6
+    },
+    {
+     "pos": 14,
+     "nombre": "Ivan, Agudo",
+     "goles": 0,
+     "pj": 5
+    },
+    {
+     "pos": 15,
+     "nombre": "Víctor, Díaz",
+     "goles": 0,
+     "pj": 2
+    },
+    {
+     "pos": 16,
+     "nombre": "Jose Luis, Sánchez",
+     "goles": 0,
+     "pj": 6
     }
    ]
   },
@@ -2708,45 +2708,45 @@
     },
     {
      "pos": 6,
-     "nombre": "David, Muñoz",
-     "goles": 0,
-     "pj": 4
-    },
-    {
-     "pos": 7,
-     "nombre": "Francisco , Castañera",
-     "goles": 0,
-     "pj": 4
-    },
-    {
-     "pos": 8,
-     "nombre": "Alejandro, Velarde",
-     "goles": 0,
-     "pj": 3
-    },
-    {
-     "pos": 9,
-     "nombre": "Ismael, Nieto",
-     "goles": 0,
-     "pj": 5
-    },
-    {
-     "pos": 10,
      "nombre": "Alberto, De La Vega",
      "goles": 0,
      "pj": 4
     },
     {
-     "pos": 11,
+     "pos": 7,
      "nombre": "Marcos , Arteaga",
      "goles": 0,
      "pj": 7
     },
     {
-     "pos": 12,
+     "pos": 8,
      "nombre": "Rubén, Gómez",
      "goles": 0,
      "pj": 7
+    },
+    {
+     "pos": 9,
+     "nombre": "David, Muñoz",
+     "goles": 0,
+     "pj": 4
+    },
+    {
+     "pos": 10,
+     "nombre": "Francisco , Castañera",
+     "goles": 0,
+     "pj": 4
+    },
+    {
+     "pos": 11,
+     "nombre": "Alejandro, Velarde",
+     "goles": 0,
+     "pj": 3
+    },
+    {
+     "pos": 12,
+     "nombre": "Ismael, Nieto",
+     "goles": 0,
+     "pj": 5
     }
    ]
   }
