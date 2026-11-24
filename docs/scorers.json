@@ -55,20 +55,20 @@
  },
  {
   "pos": 10,
-  "nombre": "Víctor , Alcaraz",
-  "goles": 0,
-  "pj": 7
- },
- {
-  "pos": 11,
   "nombre": "Rubén , Bajo",
   "goles": 0,
   "pj": 5
  },
  {
-  "pos": 12,
+  "pos": 11,
   "nombre": "Manuel, Ramón",
   "goles": 0,
   "pj": 1
+ },
+ {
+  "pos": 12,
+  "nombre": "Víctor , Alcaraz",
+  "goles": 0,
+  "pj": 7
  }
 ]
