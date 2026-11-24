@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-24T18:01:23+01:00",
+ "updated": "2026-11-24T18:16:19+01:00",
  "next_rival": {
   "name": "EL RIO FC",
   "match_id": "245251",
@@ -53,33 +53,33 @@
    },
    {
     "pos": 6,
-    "nombre": "Joel, Sidibe N",
-    "goles": 2,
-    "pj": 3
-   },
-   {
-    "pos": 7,
     "nombre": "Yassin , Benali",
     "goles": 2,
     "pj": 4
    },
    {
+    "pos": 7,
+    "nombre": "Joel, Sidibe N",
+    "goles": 2,
+    "pj": 3
+   },
+   {
     "pos": 8,
+    "nombre": "Yassin, El Ayadi",
+    "goles": 1,
+    "pj": 2
+   },
+   {
+    "pos": 9,
     "nombre": "Elias, El Baji",
     "goles": 1,
     "pj": 6
    },
    {
-    "pos": 9,
+    "pos": 10,
     "nombre": "Ilyasse, Zemraki",
     "goles": 1,
     "pj": 4
-   },
-   {
-    "pos": 10,
-    "nombre": "Yassin, El Ayadi",
-    "goles": 1,
-    "pj": 2
    },
    {
     "pos": 11,
@@ -169,13 +169,13 @@
   },
   {
    "pos": 3,
-   "nombre": "Álvaro , Pascual",
+   "nombre": "Víctor Hugo , Karaskiewicz",
    "goles": 8,
    "pj": 6
   },
   {
    "pos": 4,
-   "nombre": "Víctor Hugo , Karaskiewicz",
+   "nombre": "Álvaro , Pascual",
    "goles": 8,
    "pj": 6
   },
@@ -211,21 +211,21 @@
   },
   {
    "pos": 10,
-   "nombre": "Rubén , Bajo",
-   "goles": 0,
-   "pj": 5
-  },
-  {
-   "pos": 11,
    "nombre": "Manuel, Ramón",
    "goles": 0,
    "pj": 1
   },
   {
-   "pos": 12,
+   "pos": 11,
    "nombre": "Víctor , Alcaraz",
    "goles": 0,
    "pj": 7
+  },
+  {
+   "pos": 12,
+   "nombre": "Rubén , Bajo",
+   "goles": 0,
+   "pj": 5
   }
  ],
  "liga": {
@@ -390,16 +390,6 @@
   ],
   "matches": [
    {
-    "id": "245241",
-    "jornada": "7",
-    "fecha": "2026-11-21T20:00:00",
-    "equipo1": "EL RIO FC",
-    "equipo2": "JORHINTON FC",
-    "goles": 3,
-    "golesc": 2,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245240",
     "jornada": "7",
     "fecha": "2026-11-21T20:00:00",
@@ -408,6 +398,16 @@
     "goles": 1,
     "golesc": 6,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245241",
+    "jornada": "7",
+    "fecha": "2026-11-21T20:00:00",
+    "equipo1": "EL RIO FC",
+    "equipo2": "JORHINTON FC",
+    "goles": 3,
+    "golesc": 2,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245242",
@@ -470,16 +470,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245237",
-    "jornada": "6",
-    "fecha": "2026-11-14T21:00:00",
-    "equipo1": "NEW TEAM",
-    "equipo2": "TANGER CF",
-    "goles": 8,
-    "golesc": 6,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245236",
     "jornada": "6",
     "fecha": "2026-11-14T21:00:00",
@@ -488,6 +478,16 @@
     "goles": 8,
     "golesc": 2,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245237",
+    "jornada": "6",
+    "fecha": "2026-11-14T21:00:00",
+    "equipo1": "NEW TEAM",
+    "equipo2": "TANGER CF",
+    "goles": 8,
+    "golesc": 6,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245238",
@@ -530,16 +530,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245230",
-    "jornada": "5",
-    "fecha": "2026-11-07T21:00:00",
-    "equipo1": "PALESTINA FC",
-    "equipo2": "NEW TEAM",
-    "goles": 6,
-    "golesc": 4,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245231",
     "jornada": "5",
     "fecha": "2026-11-07T21:00:00",
@@ -548,6 +538,16 @@
     "goles": 6,
     "golesc": 5,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245230",
+    "jornada": "5",
+    "fecha": "2026-11-07T21:00:00",
+    "equipo1": "PALESTINA FC",
+    "equipo2": "NEW TEAM",
+    "goles": 6,
+    "golesc": 4,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245232",
@@ -570,16 +570,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245223",
-    "jornada": "4",
-    "fecha": "2026-10-24T20:00:00",
-    "equipo1": "NEW TEAM",
-    "equipo2": "LUGAREÑOS FC",
-    "goles": 10,
-    "golesc": 0,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245222",
     "jornada": "4",
     "fecha": "2026-10-24T20:00:00",
@@ -588,6 +578,16 @@
     "goles": 7,
     "golesc": 2,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245223",
+    "jornada": "4",
+    "fecha": "2026-10-24T20:00:00",
+    "equipo1": "NEW TEAM",
+    "equipo2": "LUGAREÑOS FC",
+    "goles": 10,
+    "golesc": 0,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245224",
@@ -610,16 +610,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245226",
-    "jornada": "4",
-    "fecha": "2026-10-24T22:00:00",
-    "equipo1": "JORHINTON FC",
-    "equipo2": "REAL RIF FC",
-    "goles": 3,
-    "golesc": 10,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245227",
     "jornada": "4",
     "fecha": "2026-10-24T22:00:00",
@@ -630,12 +620,12 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245216",
-    "jornada": "3",
-    "fecha": "2026-10-17T20:00:00",
-    "equipo1": "LUGAREÑOS FC",
-    "equipo2": "PALESTINA FC",
-    "goles": 4,
+    "id": "245226",
+    "jornada": "4",
+    "fecha": "2026-10-24T22:00:00",
+    "equipo1": "JORHINTON FC",
+    "equipo2": "REAL RIF FC",
+    "goles": 3,
     "golesc": 10,
     "pabellon": "Pabellon Pau"
    },
@@ -650,14 +640,14 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245219",
+    "id": "245216",
     "jornada": "3",
-    "fecha": "2026-10-17T21:00:00",
-    "equipo1": "JORHINTON FC",
-    "equipo2": "TELEFUNKEN 2.0",
-    "goles": 5,
-    "golesc": 6,
-    "pabellon": "Pabellon Villafontana"
+    "fecha": "2026-10-17T20:00:00",
+    "equipo1": "LUGAREÑOS FC",
+    "equipo2": "PALESTINA FC",
+    "goles": 4,
+    "golesc": 10,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245218",
@@ -668,6 +658,16 @@
     "goles": 9,
     "golesc": 6,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245219",
+    "jornada": "3",
+    "fecha": "2026-10-17T21:00:00",
+    "equipo1": "JORHINTON FC",
+    "equipo2": "TELEFUNKEN 2.0",
+    "goles": 5,
+    "golesc": 6,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245220",
@@ -710,16 +710,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245212",
-    "jornada": "2",
-    "fecha": "2026-10-03T21:00:00",
-    "equipo1": "LUGAREÑOS FC",
-    "equipo2": "TANGER CF",
-    "goles": 2,
-    "golesc": 5,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245213",
     "jornada": "2",
     "fecha": "2026-10-03T21:00:00",
@@ -728,6 +718,16 @@
     "goles": 5,
     "golesc": 3,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245212",
+    "jornada": "2",
+    "fecha": "2026-10-03T21:00:00",
+    "equipo1": "LUGAREÑOS FC",
+    "equipo2": "TANGER CF",
+    "goles": 2,
+    "golesc": 5,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245214",
@@ -750,16 +750,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245205",
-    "jornada": "1",
-    "fecha": "2026-09-26T20:00:00",
-    "equipo1": "TANGER CF",
-    "equipo2": "TITOS FC",
-    "goles": 3,
-    "golesc": 3,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245204",
     "jornada": "1",
     "fecha": "2026-09-26T20:00:00",
@@ -768,6 +758,16 @@
     "goles": 4,
     "golesc": 11,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245205",
+    "jornada": "1",
+    "fecha": "2026-09-26T20:00:00",
+    "equipo1": "TANGER CF",
+    "equipo2": "TITOS FC",
+    "goles": 3,
+    "golesc": 3,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245206",
@@ -790,16 +790,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245209",
-    "jornada": "1",
-    "fecha": "2026-09-26T22:00:00",
-    "equipo1": "REAL RIF FC",
-    "equipo2": "LOS RETIRADOS F.S",
-    "goles": 9,
-    "golesc": 0,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245208",
     "jornada": "1",
     "fecha": "2026-09-26T22:00:00",
@@ -808,6 +798,16 @@
     "goles": 3,
     "golesc": 5,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245209",
+    "jornada": "1",
+    "fecha": "2026-09-26T22:00:00",
+    "equipo1": "REAL RIF FC",
+    "equipo2": "LOS RETIRADOS F.S",
+    "goles": 9,
+    "golesc": 0,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245247",
@@ -990,16 +990,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245264",
-    "jornada": "11",
-    "fecha": "2027-01-16T20:00:00",
-    "equipo1": "NEW TEAM",
-    "equipo2": "EL RIO FC",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245265",
     "jornada": "11",
     "fecha": "2027-01-16T20:00:00",
@@ -1008,6 +998,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245264",
+    "jornada": "11",
+    "fecha": "2027-01-16T20:00:00",
+    "equipo1": "NEW TEAM",
+    "equipo2": "EL RIO FC",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245266",
@@ -1330,16 +1330,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245299",
-    "jornada": "16",
-    "fecha": "2027-03-06T22:00:00",
-    "equipo1": "REAL RIF FC",
-    "equipo2": "PALANCAS FS",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245298",
     "jornada": "16",
     "fecha": "2027-03-06T22:00:00",
@@ -1348,6 +1338,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245299",
+    "jornada": "16",
+    "fecha": "2027-03-06T22:00:00",
+    "equipo1": "REAL RIF FC",
+    "equipo2": "PALANCAS FS",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245300",
@@ -1410,16 +1410,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245306",
-    "jornada": "18",
-    "fecha": "2027-04-03T20:00:00",
-    "equipo1": "PALANCAS FS",
-    "equipo2": "LOS RETIRADOS F.S",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellón Villa De Móstoles"
-   },
-   {
     "id": "245307",
     "jornada": "18",
     "fecha": "2027-04-03T20:00:00",
@@ -1428,6 +1418,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245306",
+    "jornada": "18",
+    "fecha": "2027-04-03T20:00:00",
+    "equipo1": "PALANCAS FS",
+    "equipo2": "LOS RETIRADOS F.S",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellón Villa De Móstoles"
    },
    {
     "id": "245308",
@@ -1822,57 +1822,57 @@
     },
     {
      "pos": 5,
-     "nombre": "David, Martínez",
-     "goles": 3,
-     "pj": 4
-    },
-    {
-     "pos": 6,
      "nombre": "Daouda, Berete",
      "goles": 3,
      "pj": 4
     },
     {
-     "pos": 7,
-     "nombre": "Mohamed, Aharram",
-     "goles": 2,
-     "pj": 7
+     "pos": 6,
+     "nombre": "David, Martínez",
+     "goles": 3,
+     "pj": 4
     },
     {
-     "pos": 8,
+     "pos": 7,
      "nombre": "Ismael, Ettahri",
      "goles": 2,
      "pj": 3
     },
     {
-     "pos": 9,
-     "nombre": "Daniel, Aldegunde",
-     "goles": 1,
-     "pj": 4
+     "pos": 8,
+     "nombre": "Mohamed, Aharram",
+     "goles": 2,
+     "pj": 7
     },
     {
-     "pos": 10,
+     "pos": 9,
      "nombre": "Saad, Achkoukar",
      "goles": 1,
      "pj": 7
     },
     {
-     "pos": 11,
+     "pos": 10,
      "nombre": "Guillermo, Romero",
      "goles": 1,
      "pj": 2
     },
     {
-     "pos": 12,
-     "nombre": "Alaa, Marsou",
-     "goles": 0,
-     "pj": 5
+     "pos": 11,
+     "nombre": "Daniel, Aldegunde",
+     "goles": 1,
+     "pj": 4
     },
     {
-     "pos": 13,
+     "pos": 12,
      "nombre": "Samir, El Arroud",
      "goles": 0,
      "pj": 3
+    },
+    {
+     "pos": 13,
+     "nombre": "Alaa, Marsou",
+     "goles": 0,
+     "pj": 5
     }
    ]
   },
@@ -1889,15 +1889,15 @@
     },
     {
      "pos": 2,
-     "nombre": "Adrian, Huete",
-     "goles": 7,
-     "pj": 3
-    },
-    {
-     "pos": 3,
      "nombre": "Alejandro, Tordable",
      "goles": 7,
      "pj": 7
+    },
+    {
+     "pos": 3,
+     "nombre": "Adrian, Huete",
+     "goles": 7,
+     "pj": 3
     },
     {
      "pos": 4,
@@ -1925,33 +1925,33 @@
     },
     {
      "pos": 8,
-     "nombre": "Mohammed, Beddoura",
-     "goles": 2,
-     "pj": 3
-    },
-    {
-     "pos": 9,
      "nombre": "Florinel, Daniel",
      "goles": 2,
      "pj": 7
     },
     {
-     "pos": 10,
-     "nombre": "Moises, Palomeque",
-     "goles": 1,
-     "pj": 2
+     "pos": 9,
+     "nombre": "Mohammed, Beddoura",
+     "goles": 2,
+     "pj": 3
     },
     {
-     "pos": 11,
+     "pos": 10,
      "nombre": "Sergio, Rodríguez",
      "goles": 1,
      "pj": 4
     },
     {
-     "pos": 12,
+     "pos": 11,
      "nombre": "Miguel Angel , Cano",
      "goles": 1,
      "pj": 3
+    },
+    {
+     "pos": 12,
+     "nombre": "Moises, Palomeque",
+     "goles": 1,
+     "pj": 2
     },
     {
      "pos": 13,
@@ -1986,49 +1986,49 @@
     },
     {
      "pos": 3,
-     "nombre": "Sergio, Calabia",
-     "goles": 3,
-     "pj": 6
-    },
-    {
-     "pos": 4,
      "nombre": "Ibrahim, Amanssour",
      "goles": 3,
      "pj": 2
     },
     {
-     "pos": 5,
-     "nombre": "Nouaman, El Falaki",
-     "goles": 2,
-     "pj": 5
+     "pos": 4,
+     "nombre": "Sergio, Calabia",
+     "goles": 3,
+     "pj": 6
     },
     {
-     "pos": 6,
+     "pos": 5,
      "nombre": "Ahmed, El Boujdaini",
      "goles": 2,
      "pj": 7
     },
     {
-     "pos": 7,
+     "pos": 6,
      "nombre": "Mohammed, Amanssour",
      "goles": 2,
      "pj": 2
     },
     {
-     "pos": 8,
+     "pos": 7,
      "nombre": "Oussama, Amanssour",
      "goles": 2,
      "pj": 6
     },
     {
+     "pos": 8,
+     "nombre": "Nouaman, El Falaki",
+     "goles": 2,
+     "pj": 5
+    },
+    {
      "pos": 9,
-     "nombre": "Mohamed Ali, Ali",
+     "nombre": "Hamza, Khachcha",
      "goles": 0,
      "pj": 7
     },
     {
      "pos": 10,
-     "nombre": "Hamza, Khachcha",
+     "nombre": "Mohamed Ali, Ali",
      "goles": 0,
      "pj": 7
     }
@@ -2174,33 +2174,33 @@
     },
     {
      "pos": 6,
-     "nombre": "Joel, Sidibe N",
-     "goles": 2,
-     "pj": 3
-    },
-    {
-     "pos": 7,
      "nombre": "Yassin , Benali",
      "goles": 2,
      "pj": 4
     },
     {
+     "pos": 7,
+     "nombre": "Joel, Sidibe N",
+     "goles": 2,
+     "pj": 3
+    },
+    {
      "pos": 8,
+     "nombre": "Yassin, El Ayadi",
+     "goles": 1,
+     "pj": 2
+    },
+    {
+     "pos": 9,
      "nombre": "Elias, El Baji",
      "goles": 1,
      "pj": 6
     },
     {
-     "pos": 9,
+     "pos": 10,
      "nombre": "Ilyasse, Zemraki",
      "goles": 1,
      "pj": 4
-    },
-    {
-     "pos": 10,
-     "nombre": "Yassin, El Ayadi",
-     "goles": 1,
-     "pj": 2
     },
     {
      "pos": 11,
@@ -2277,39 +2277,39 @@
     },
     {
      "pos": 9,
-     "nombre": "Adrián , Quintana",
-     "goles": 0,
-     "pj": 3
-    },
-    {
-     "pos": 10,
-     "nombre": "Mohamed, Rabah",
-     "goles": 0,
-     "pj": 6
-    },
-    {
-     "pos": 11,
      "nombre": "Omar , Rabah",
      "goles": 0,
      "pj": 4
     },
     {
-     "pos": 12,
+     "pos": 10,
      "nombre": "Mario , De Cristo",
      "goles": 0,
      "pj": 5
     },
     {
-     "pos": 13,
+     "pos": 11,
      "nombre": "Alvaro , Castro",
      "goles": 0,
      "pj": 7
     },
     {
-     "pos": 14,
+     "pos": 12,
      "nombre": "Imran, Maali",
      "goles": 0,
      "pj": 7
+    },
+    {
+     "pos": 13,
+     "nombre": "Adrián , Quintana",
+     "goles": 0,
+     "pj": 3
+    },
+    {
+     "pos": 14,
+     "nombre": "Mohamed, Rabah",
+     "goles": 0,
+     "pj": 6
     }
    ]
   },
@@ -2447,27 +2447,27 @@
     },
     {
      "pos": 10,
+     "nombre": "Martin , Alami",
+     "goles": 0,
+     "pj": 5
+    },
+    {
+     "pos": 11,
      "nombre": "Rodrigo, Vargas",
      "goles": 0,
      "pj": 6
     },
     {
-     "pos": 11,
+     "pos": 12,
      "nombre": "Miguel, Medina",
      "goles": 0,
      "pj": 4
     },
     {
-     "pos": 12,
+     "pos": 13,
      "nombre": "Carlos , Castro",
      "goles": 0,
      "pj": 1
-    },
-    {
-     "pos": 13,
-     "nombre": "Martin , Alami",
-     "goles": 0,
-     "pj": 5
     }
    ]
   },
@@ -2490,21 +2490,21 @@
     },
     {
      "pos": 3,
+     "nombre": "Ivan, Sanchez",
+     "goles": 3,
+     "pj": 4
+    },
+    {
+     "pos": 4,
      "nombre": "Miguel, Muñoz",
      "goles": 3,
      "pj": 6
     },
     {
-     "pos": 4,
+     "pos": 5,
      "nombre": "Alfredo, Salinas",
      "goles": 3,
      "pj": 7
-    },
-    {
-     "pos": 5,
-     "nombre": "Ivan, Sanchez",
-     "goles": 3,
-     "pj": 4
     },
     {
      "pos": 6,
@@ -2532,39 +2532,39 @@
     },
     {
      "pos": 10,
-     "nombre": "David, Villarreal",
-     "goles": 0,
-     "pj": 2
-    },
-    {
-     "pos": 11,
      "nombre": "Marcos, Alvarez",
      "goles": 0,
      "pj": 6
     },
     {
-     "pos": 12,
+     "pos": 11,
      "nombre": "Raul, Rodriguez",
      "goles": 0,
      "pj": 2
     },
     {
-     "pos": 13,
+     "pos": 12,
      "nombre": "Carlos, Perez",
      "goles": 0,
      "pj": 7
     },
     {
-     "pos": 14,
+     "pos": 13,
      "nombre": "Daniel, Esteban",
      "goles": 0,
      "pj": 3
     },
     {
-     "pos": 15,
+     "pos": 14,
      "nombre": "Tijani, Santillana",
      "goles": 0,
      "pj": 7
+    },
+    {
+     "pos": 15,
+     "nombre": "David, Villarreal",
+     "goles": 0,
+     "pj": 2
     }
    ]
   },
@@ -2690,63 +2690,63 @@
     },
     {
      "pos": 3,
-     "nombre": "Jose Luis, Lopez",
-     "goles": 1,
-     "pj": 4
-    },
-    {
-     "pos": 4,
-     "nombre": "Diego, Castañera",
-     "goles": 1,
-     "pj": 5
-    },
-    {
-     "pos": 5,
      "nombre": "Izan, Berrocal",
      "goles": 1,
      "pj": 6
     },
     {
+     "pos": 4,
+     "nombre": "Jose Luis, Lopez",
+     "goles": 1,
+     "pj": 4
+    },
+    {
+     "pos": 5,
+     "nombre": "Diego, Castañera",
+     "goles": 1,
+     "pj": 5
+    },
+    {
      "pos": 6,
-     "nombre": "David, Muñoz",
-     "goles": 0,
-     "pj": 4
-    },
-    {
-     "pos": 7,
-     "nombre": "Francisco , Castañera",
-     "goles": 0,
-     "pj": 4
-    },
-    {
-     "pos": 8,
      "nombre": "Alejandro, Velarde",
      "goles": 0,
      "pj": 3
     },
     {
-     "pos": 9,
+     "pos": 7,
      "nombre": "Ismael, Nieto",
      "goles": 0,
      "pj": 5
     },
     {
-     "pos": 10,
+     "pos": 8,
      "nombre": "Alberto, De La Vega",
      "goles": 0,
      "pj": 4
     },
     {
-     "pos": 11,
+     "pos": 9,
      "nombre": "Marcos , Arteaga",
      "goles": 0,
      "pj": 7
     },
     {
-     "pos": 12,
+     "pos": 10,
      "nombre": "Rubén, Gómez",
      "goles": 0,
      "pj": 7
+    },
+    {
+     "pos": 11,
+     "nombre": "David, Muñoz",
+     "goles": 0,
+     "pj": 4
+    },
+    {
+     "pos": 12,
+     "nombre": "Francisco , Castañera",
+     "goles": 0,
+     "pj": 4
     }
    ]
   }
