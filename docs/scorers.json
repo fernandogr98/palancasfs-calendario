@@ -1,25 +1,25 @@
 [
  {
   "pos": 1,
-  "nombre": "Rafael, Manzano",
-  "goles": 9,
-  "pj": 6
- },
- {
-  "pos": 2,
   "nombre": "Miguel, García",
   "goles": 9,
   "pj": 7
  },
  {
+  "pos": 2,
+  "nombre": "Rafael, Manzano",
+  "goles": 9,
+  "pj": 6
+ },
+ {
   "pos": 3,
-  "nombre": "Víctor Hugo , Karaskiewicz",
+  "nombre": "Álvaro , Pascual",
   "goles": 8,
   "pj": 6
  },
  {
   "pos": 4,
-  "nombre": "Álvaro , Pascual",
+  "nombre": "Víctor Hugo , Karaskiewicz",
   "goles": 8,
   "pj": 6
  },
@@ -55,20 +55,20 @@
  },
  {
   "pos": 10,
-  "nombre": "Manuel, Ramón",
-  "goles": 0,
-  "pj": 1
- },
- {
-  "pos": 11,
   "nombre": "Víctor , Alcaraz",
   "goles": 0,
   "pj": 7
  },
  {
-  "pos": 12,
+  "pos": 11,
   "nombre": "Rubén , Bajo",
   "goles": 0,
   "pj": 5
+ },
+ {
+  "pos": 12,
+  "nombre": "Manuel, Ramón",
+  "goles": 0,
+  "pj": 1
  }
 ]
