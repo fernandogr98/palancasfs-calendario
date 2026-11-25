@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-25T17:23:58+01:00",
+ "updated": "2026-11-25T17:24:59+01:00",
  "next_rival": {
   "name": "EL RIO FC",
   "match_id": "245251",
@@ -470,16 +470,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245236",
-    "jornada": "6",
-    "fecha": "2026-11-14T21:00:00",
-    "equipo1": "REAL RIF FC",
-    "equipo2": "LUGAREÑOS FC",
-    "goles": 8,
-    "golesc": 2,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245237",
     "jornada": "6",
     "fecha": "2026-11-14T21:00:00",
@@ -488,6 +478,16 @@
     "goles": 8,
     "golesc": 6,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245236",
+    "jornada": "6",
+    "fecha": "2026-11-14T21:00:00",
+    "equipo1": "REAL RIF FC",
+    "equipo2": "LUGAREÑOS FC",
+    "goles": 8,
+    "golesc": 2,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245238",
@@ -510,16 +510,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245229",
-    "jornada": "5",
-    "fecha": "2026-11-07T20:00:00",
-    "equipo1": "LUGAREÑOS FC",
-    "equipo2": "TELEFUNKEN 2.0",
-    "goles": 2,
-    "golesc": 3,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245228",
     "jornada": "5",
     "fecha": "2026-11-07T20:00:00",
@@ -528,6 +518,16 @@
     "goles": 5,
     "golesc": 5,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245229",
+    "jornada": "5",
+    "fecha": "2026-11-07T20:00:00",
+    "equipo1": "LUGAREÑOS FC",
+    "equipo2": "TELEFUNKEN 2.0",
+    "goles": 2,
+    "golesc": 3,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245230",
@@ -650,16 +650,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245218",
-    "jornada": "3",
-    "fecha": "2026-10-17T21:00:00",
-    "equipo1": "TITOS FC",
-    "equipo2": "EL RIO FC",
-    "goles": 9,
-    "golesc": 6,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245219",
     "jornada": "3",
     "fecha": "2026-10-17T21:00:00",
@@ -668,6 +658,16 @@
     "goles": 5,
     "golesc": 6,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245218",
+    "jornada": "3",
+    "fecha": "2026-10-17T21:00:00",
+    "equipo1": "TITOS FC",
+    "equipo2": "EL RIO FC",
+    "goles": 9,
+    "golesc": 6,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245220",
@@ -690,16 +690,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245211",
-    "jornada": "2",
-    "fecha": "2026-10-03T20:00:00",
-    "equipo1": "PALESTINA FC",
-    "equipo2": "PALANCAS FS",
-    "goles": 3,
-    "golesc": 7,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245210",
     "jornada": "2",
     "fecha": "2026-10-03T20:00:00",
@@ -708,6 +698,16 @@
     "goles": 2,
     "golesc": 2,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245211",
+    "jornada": "2",
+    "fecha": "2026-10-03T20:00:00",
+    "equipo1": "PALESTINA FC",
+    "equipo2": "PALANCAS FS",
+    "goles": 3,
+    "golesc": 7,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245212",
@@ -750,16 +750,6 @@
     "pabellon": "Pabellon Pau"
    },
    {
-    "id": "245204",
-    "jornada": "1",
-    "fecha": "2026-09-26T20:00:00",
-    "equipo1": "JORHINTON FC",
-    "equipo2": "PALESTINA FC",
-    "goles": 4,
-    "golesc": 11,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245205",
     "jornada": "1",
     "fecha": "2026-09-26T20:00:00",
@@ -768,6 +758,16 @@
     "goles": 3,
     "golesc": 3,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245204",
+    "jornada": "1",
+    "fecha": "2026-09-26T20:00:00",
+    "equipo1": "JORHINTON FC",
+    "equipo2": "PALESTINA FC",
+    "goles": 4,
+    "golesc": 11,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245206",
@@ -830,16 +830,6 @@
     "pabellon": "Pabellón Villa De Móstoles"
    },
    {
-    "id": "245249",
-    "jornada": "8",
-    "fecha": "2026-11-28T21:00:00",
-    "equipo1": "TITOS FC",
-    "equipo2": "PALESTINA FC",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245248",
     "jornada": "8",
     "fecha": "2026-11-28T21:00:00",
@@ -848,6 +838,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245249",
+    "jornada": "8",
+    "fecha": "2026-11-28T21:00:00",
+    "equipo1": "TITOS FC",
+    "equipo2": "PALESTINA FC",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245250",
@@ -970,16 +970,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245263",
-    "jornada": "10",
-    "fecha": "2027-01-09T22:00:00",
-    "equipo1": "TITOS FC",
-    "equipo2": "TELEFUNKEN 2.0",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245262",
     "jornada": "10",
     "fecha": "2027-01-09T22:00:00",
@@ -988,6 +978,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245263",
+    "jornada": "10",
+    "fecha": "2027-01-09T22:00:00",
+    "equipo1": "TITOS FC",
+    "equipo2": "TELEFUNKEN 2.0",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245264",
@@ -1050,16 +1050,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245270",
-    "jornada": "12",
-    "fecha": "2027-01-23T20:00:00",
-    "equipo1": "EL RIO FC",
-    "equipo2": "TELEFUNKEN 2.0",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellón Villa De Móstoles"
-   },
-   {
     "id": "245271",
     "jornada": "12",
     "fecha": "2027-01-23T20:00:00",
@@ -1068,6 +1058,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245270",
+    "jornada": "12",
+    "fecha": "2027-01-23T20:00:00",
+    "equipo1": "EL RIO FC",
+    "equipo2": "TELEFUNKEN 2.0",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellón Villa De Móstoles"
    },
    {
     "id": "245272",
@@ -1110,16 +1110,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245277",
-    "jornada": "13",
-    "fecha": "2027-02-06T20:00:00",
-    "equipo1": "PALANCAS FS",
-    "equipo2": "PALESTINA FC",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245276",
     "jornada": "13",
     "fecha": "2027-02-06T20:00:00",
@@ -1128,6 +1118,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245277",
+    "jornada": "13",
+    "fecha": "2027-02-06T20:00:00",
+    "equipo1": "PALANCAS FS",
+    "equipo2": "PALESTINA FC",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245278",
@@ -1150,16 +1150,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245281",
-    "jornada": "13",
-    "fecha": "2027-02-06T22:00:00",
-    "equipo1": "TELEFUNKEN 2.0",
-    "equipo2": "DESCANSO FC",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245280",
     "jornada": "13",
     "fecha": "2027-02-06T22:00:00",
@@ -1168,6 +1158,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245281",
+    "jornada": "13",
+    "fecha": "2027-02-06T22:00:00",
+    "equipo1": "TELEFUNKEN 2.0",
+    "equipo2": "DESCANSO FC",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245282",
@@ -1350,16 +1350,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245300",
-    "jornada": "17",
-    "fecha": "2027-03-13T20:00:00",
-    "equipo1": "TANGER CF",
-    "equipo2": "NEW TEAM",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Pau"
-   },
-   {
     "id": "245301",
     "jornada": "17",
     "fecha": "2027-03-13T20:00:00",
@@ -1368,6 +1358,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Villafontana"
+   },
+   {
+    "id": "245300",
+    "jornada": "17",
+    "fecha": "2027-03-13T20:00:00",
+    "equipo1": "TANGER CF",
+    "equipo2": "NEW TEAM",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Pau"
    },
    {
     "id": "245302",
@@ -1430,16 +1430,6 @@
     "pabellon": "Pabellon Villafontana"
    },
    {
-    "id": "245309",
-    "jornada": "18",
-    "fecha": "2027-04-03T21:00:00",
-    "equipo1": "REAL RIF FC",
-    "equipo2": "PALESTINA FC",
-    "goles": null,
-    "golesc": null,
-    "pabellon": "Pabellon Villafontana"
-   },
-   {
     "id": "245308",
     "jornada": "18",
     "fecha": "2027-04-03T21:00:00",
@@ -1448,6 +1438,16 @@
     "goles": null,
     "golesc": null,
     "pabellon": "Pabellon Pau"
+   },
+   {
+    "id": "245309",
+    "jornada": "18",
+    "fecha": "2027-04-03T21:00:00",
+    "equipo1": "REAL RIF FC",
+    "equipo2": "PALESTINA FC",
+    "goles": null,
+    "golesc": null,
+    "pabellon": "Pabellon Villafontana"
    },
    {
     "id": "245310",
