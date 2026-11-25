@@ -13,13 +13,13 @@
  },
  {
   "pos": 3,
-  "nombre": "Álvaro , Pascual",
+  "nombre": "Víctor Hugo , Karaskiewicz",
   "goles": 8,
   "pj": 6
  },
  {
   "pos": 4,
-  "nombre": "Víctor Hugo , Karaskiewicz",
+  "nombre": "Álvaro , Pascual",
   "goles": 8,
   "pj": 6
  },
@@ -55,9 +55,9 @@
  },
  {
   "pos": 10,
-  "nombre": "Víctor , Alcaraz",
+  "nombre": "Manuel, Ramón",
   "goles": 0,
-  "pj": 7
+  "pj": 1
  },
  {
   "pos": 11,
@@ -67,8 +67,8 @@
  },
  {
   "pos": 12,
-  "nombre": "Manuel, Ramón",
+  "nombre": "Víctor , Alcaraz",
   "goles": 0,
-  "pj": 1
+  "pj": 7
  }
 ]
