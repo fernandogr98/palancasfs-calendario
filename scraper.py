@@ -117,6 +117,20 @@ def fetch_standings(session: requests.Session) -> list[dict]:
     return out
 
 
+def _stable_scorers(rows: list[dict]) -> list[dict]:
+    """Orden determinístico de goleadores.
+
+    ADASUMA reordena los jugadores empatados a goles entre peticiones (tie-break
+    inestable), lo que producía un diff falso en cada ejecución y un push cada
+    15 min. Ordenamos por goles desc y nombre, y renumeramos `pos`, para que la
+    salida sea estable y el updater solo publique cambios reales.
+    """
+    rows = sorted(rows, key=lambda r: (-r.get("goles", 0), r.get("nombre", "").casefold()))
+    for i, r in enumerate(rows, 1):
+        r["pos"] = i
+    return rows
+
+
 def fetch_scorers(session: requests.Session) -> list[dict]:
     """Goleadores de PALANCAS FS.
 
@@ -134,7 +148,7 @@ def fetch_scorers(session: requests.Session) -> list[dict]:
             except (ValueError, TypeError):
                 return 0
         out.append({"pos": n(0), "nombre": c[1].strip(), "goles": n(2), "pj": n(3)})
-    return out
+    return _stable_scorers(out)
 
 
 def fetch_team_scorers(session: requests.Session, team_id) -> list[dict]:
@@ -153,7 +167,7 @@ def fetch_team_scorers(session: requests.Session, team_id) -> list[dict]:
                         "pj": int(c[3]) if len(c) > 3 and str(c[3]).isdigit() else None})
         except (ValueError, TypeError):
             continue
-    return out
+    return _stable_scorers(out)
 
 
 def fetch_all_team_scorers(standings: list[dict], previous: list | None = None) -> list[dict]:
