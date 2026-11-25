@@ -415,13 +415,13 @@ def main():
     scorers_map = {t["idequipo"]: t for t in teams}
     next_rival = build_next_rival(matches, division, standings, session, scorers_map=scorers_map)
 
-    liga_matches = [{
+    liga_matches = sorted([{
         "id": m["id"], "jornada": m["jornada"], "fecha": m["start"].isoformat(),
         "equipo1": m["equipo1"], "equipo2": m["equipo2"],
         "goles": int(m["goles"]) if _has_score(m) else None,
         "golesc": int(m["golesc"]) if _has_score(m) else None,
         "pabellon": m["pabellon"],
-    } for m in division if m["start"]]
+    } for m in division if m["start"]], key=lambda m: (m["fecha"], m["id"]))
 
     stats = {
         "updated": datetime.now().astimezone().isoformat(timespec="seconds"),
